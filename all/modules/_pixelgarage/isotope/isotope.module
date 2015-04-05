@@ -1,0 +1,576 @@
+<?php
+/**
+ * @file
+ * Provides an API for integrating the jQuery Isotope plugin with Drupal.
+ */
+
+//
+//  Isotope library definition and checking functions
+//
+
+/**
+ * Implements hook_libraries_info().
+ */
+function isotope_libraries_info() {
+  $libraries['isotope'] = array(
+    'name' => 'Isotope magical layout',
+    'vendor url' => 'http://isotope.desandro.com/',
+    'download url' => 'http://isotope.desandro.com/',
+    /*
+    'version arguments' => array(
+      'file' => 'jquery.isotope.min.js',
+      // 1.x: Isotope v1.5.26
+      'pattern' => '/Isotope\s+v?([0-9\.]+)/',
+      'lines' => 2,
+      'cols' => 50,
+    ),
+    'files' => array(
+      'js' => array(
+        'jquery.isotope.min.js',
+      ),
+    ),
+    */
+    'version arguments' => array(
+       'file' => 'isotope.pkgd.min.js',
+       // 2.x: Isotope PACKAGED v2.0.0
+       'pattern' => '/Isotope\s+PACKAGED\s+v?([0-9\.]+)/',
+       'lines' => 2,
+       'cols' => 50,
+    ),
+    'files' => array(
+       'js' => array(
+         'isotope.pkgd.min.js',
+         'imagesloaded.pkgd.min.js',
+       ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Check if the Isotope library is installed.
+ *
+ * @return
+ *   A boolean indicating the installed status.
+ */
+function isotope_installed() {
+  if (($library = libraries_detect('isotope')) && !empty($library['installed'])) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Check if the Isotope library has been loaded.
+ *
+ * @return
+ *   A boolean indicating the loaded status.
+ */
+function isotope_loaded() {
+  $library = libraries_load('isotope');
+  if (($library) && !empty($library['loaded'])) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/* -----------------------------------------------------------------
+ *  Isotope layout functions
+ * ----------------------------------------------------------------- */
+
+  /**
+ * Get default Isotope layout options.
+ *
+ * @return array An associative array of default layout options for Isotope.
+ *
+ * The following options are available:
+ * isotope_layout_mode:     Defines the layout of the items (default is 'masonry')
+ * isotope_item_sizing:     Defines the different available item sizes, e.g. w2 = two different size in width, h3 = three different sizes in height and if it is set manually or randomly.
+ * isotope_sort_by:         Defines the sort by of the items (default is 'original-order')
+ * isotope_resizable:       Defines, if the chosen isotope layout is resizable or not. Default: true.
+ * isotope_uncover_effect:  Defines, if the items are uncovered with animation during scrolling or not. Default: false.
+ * isotope_trans_duration:  Defines the transition duration of an item from hidden to visible and vice-versa. Default: 400ms.
+ * isotope_alignment:       Defines the alignment of a single row or column in the container [0,1]. 0 means left/top, 0.5 means center, 1 means right/bottom.
+ */
+function isotope_layout_default_options() {
+  $options = array(
+    'isotope_layout_mode' => 'masonry',
+    'isotope_item_sizing' => 'manual',
+    'isotope_sort_by' => 'original-order',
+    'isotope_resizable' => 1,
+    'isotope_uncover_effect' => 0,
+    'isotope_trans_duration' => '400',
+    'isotope_alignment' => 0,
+  );
+
+  // Allow other modules to alter the default options
+  drupal_alter('isotope_layout_default_options', $options);
+
+  return $options;
+}
+
+/**
+ * Add Isotope layout options to an existing form.
+ *
+ * @param $form
+ *   A form array to add Isotope layout options to.
+ * @param $default_values
+ *   An array of default form values.
+ */
+function isotope_add_layout_options_to_form(&$form, $default_values) {
+  $form['isotope_layout_mode'] = array(
+    '#type' => 'select',
+    '#title' => t('Layout mode'),
+    '#description' => t("Defines the layout mode for the items."),
+    '#default_value' => $default_values['isotope_layout_mode'],
+    '#options' => array(
+      'masonry' => t('Masonry'),
+      'packery' => t('Packery'),
+      'masonryHorizontal' => t('Masonry horizontal'),
+      'fitRows' => t('Fit rows'),
+      'fitColumns' => t('Fit columns'),
+      'cellsByRow' => t('Cells by row'),
+      'cellsByColumn' => t('Cells by column'),
+      'horizontal' => t('Horizontal'),
+      'vertical' => t('Vertical'),
+    ),
+    '#required' => TRUE,
+  );
+  $form['isotope_item_sizing'] = array(
+    '#type' => 'select',
+    '#title' => t('Add item size classes'),
+    '#description' => t("Select between manual and random item size class generation. Choose how many different sizes in width and height are available [Example: w2 => classes w1,w2 available, h3 => classes h1,h2,h3 available]."),
+    '#default_value' => $default_values['isotope_item_sizing'],
+    '#options' => array(
+      'manual' => t('Add manually'),
+      'w1xh2' => t('Random w1 - h2'),
+      'w2xh1' => t('Random w2 - h1'),
+      'w2xh2' => t('Random w2 - h2'),
+      'w3xh2' => t('Random w3 - h2'),
+      'w2xh3' => t('Random w2 - h3'),
+      'w3xh3' => t('Random w3 - h3'),
+      'w4xh6' => t('Random w4 - h6'),
+    ),
+    '#required' => FALSE,
+  );
+  $form['isotope_sort_by'] = array(
+    '#type' => 'select',
+    '#title' => t('Base sorting'),
+    '#description' => t("Defines the base order of unsorted or not sortable items."),
+    '#default_value' => $default_values['isotope_sort_by'],
+    '#options' => array(
+      'original-order' => t('Original order'),
+      'random' => t('Random'),
+    ),
+    '#required' => FALSE,
+  );
+  $form['isotope_resizable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Resizable layout'),
+    '#description' => t("Automatically rearrange items when the container is resized."),
+    '#default_value' => $default_values['isotope_resizable'],
+    '#required' => FALSE,
+  );
+  $form['isotope_uncover_effect'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable uncover animation effect'),
+    '#description' => t("Enable uncover animation effects for items getting visible during scrolling. The animation can be implemented in CSS via the class .animate."),
+    '#default_value' => $default_values['isotope_uncover_effect'],
+    '#required' => FALSE,
+  );
+  $form['isotope_trans_duration'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Transition duration'),
+    '#default_value' => $default_values['isotope_trans_duration'],
+    '#description' => t('Duration in milliseconds of the transition when items change position or appearance.'),
+    '#size' => 10,
+    '#maxlength' => 5,
+    '#required' => FALSE,
+  );
+  $form['isotope_alignment'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Horizontal or vertical alignment'),
+    '#description' => t("Used in layout modes 'Horizontal' and 'Vertical' only: Defines row or column alignment: top/left = 0, center = 0.5, bottom/right = 1."),
+    '#default_value' => $default_values['isotope_alignment'],
+    '#size' => 5,
+    '#maxlength' => 4,
+    '#required' => FALSE,
+  );
+
+  // Allow other modules to alter the form
+  drupal_alter('isotope_layout_options_form', $form, $default_values);
+}
+
+/**
+ * Applies all necessary settings, JS and CSS files to layout an Isotope container.
+ *
+ * @param $container
+ *   The CSS selector of the container element to which the Isotope layout is applied to.
+ * @param $options
+ *   An associative array of Isotope layout options.
+ *   Contains:
+ *   - layout_mode:           Defines the layout of the items (default is 'masonry')
+ *   - resizable:             Defines, if the chosen isotope layout is resizable or not. Default: true.
+ *   - uncover_effect_enabled:Defines, if the items are uncovered with animation during scrolling or not. Default: false.
+ *   - trans_duration:        Defines the transition duration of an item from hidden to visible and vice-versa. Default: 400ms.
+ *   - alignment:             Defines the alignment of a single row or column in the container [0,1]. 0 means left/top, 0.5 means center, 1 means right/bottom.
+ *   - item_selector:         The CSS selector of the items within the container.
+ *   - grid_sizer:            The CSS selector of the grid sizer element defining width and height.
+ *   - gutter_sizer:          The CSS selector of the gutter sizer element defining gutter width or height.
+ *   - stamp_elements:        The CSS selector of the stamp element.
+ *   - filter_enabled:        TRUE, if the filtering of items is enabled in the container (items have filter element defined).
+ *   - sort_by:               The base order of the items in the container, origin-order or random.
+ *   - sort_enabled:          TRUE, if the sorting of items is enabled in the isotope container (items contain sort element).
+ *   - sort_data:             An associative array containing all sort criteria as keys and its corresponding sortBy string (attribute name) as values.
+ */
+function isotope_layout_apply($container, $options = array()) {
+  if (isotope_loaded() && !empty($container)) {
+    // For any options not specified, use default options
+    $options += isotope_layout_default_options();
+    if (!isset($options['isotope_item_selector'])) {
+      $options['isotope_item_selector'] = '.isotope-item';
+    }
+
+    // Setup Isotope settings for specific container
+    $js_settings = array(
+      'isotope' => array(
+        $container => array(
+          'layout_mode' => $options['isotope_layout_mode'],
+          'resizable' => $options['isotope_resizable'],
+          'uncover_effect_enabled' => $options['isotope_uncover_effect'],
+          'trans_duration' => $options['isotope_trans_duration'],
+          'alignment' => $options['isotope_alignment'],
+          'item_selector' => $options['isotope_item_selector'],
+          'grid_sizer' => $options['isotope_grid_sizer'],
+          'gutter_sizer' => $options['isotope_gutter_sizer'],
+          'stamp_elements' => $options['isotope_stamp_elements'],
+          'filters_enabled' => $options['isotope_filters_enabled'],
+          'sort_by' => 'original-order',  // random sorting is done with the rows, not in JavaScript ( see template_process_views_view_isotope(&$vars) )
+          'sort_enabled' => $options['isotope_sort_enabled'],
+          'sort_data' => $options['isotope_sort_data'],
+        ),
+      ),
+    );
+
+    // get specific isotope files
+    $script_file = drupal_get_path('module', 'isotope') . '/js/isotope.js';
+    $css_file = drupal_get_path('module', 'isotope') . '/css/isotope.css';
+
+    // get specific layout mode files
+    $layout_mode = $options['isotope_layout_mode'];
+    $layout_file = '';
+    if ($layout_mode == 'masonryHorizontal') {
+      $layout_file = '/layout-modes/masonry-horizontal.js';
+    } else if ($layout_mode == 'fitColumns') {
+      $layout_file = '/layout-modes/fit-columns.js';
+    } else if ($layout_mode == 'cellsByRow') {
+      $layout_file = '/layout-modes/cells-by-row.js';
+    } else if ($layout_mode == 'cellsByColumn') {
+      $layout_file = '/layout-modes/cells-by-column.js';
+    } else if ($layout_mode == 'horizontal') {
+      $layout_file = '/layout-modes/horizontal.js';
+    } else if ($layout_mode == 'packery') {
+      $layout_file = '/layout-modes/packery-mode.pkgd.js';
+    }
+
+    // Allow other modules to alter the Isotope layout script
+    $context = array(
+      'container' => $container,
+      'options' => $options,
+    );
+    drupal_alter('isotope_layout_script', $js_settings, $script_file, $context);
+
+    // Apply the needed files and js settings
+    drupal_add_js($js_settings, 'setting');
+    drupal_add_js($script_file);
+    if (!empty($layout_file)) {
+      $layout_file = libraries_get_path('isotope') . $layout_file;
+      drupal_add_js($layout_file);
+    }
+    drupal_add_css($css_file);
+  }
+
+}
+
+
+/* -----------------------------------------------------------------
+ *  Isotope filter functions
+ * ----------------------------------------------------------------- */
+
+/**
+ * Get default Isotope filter options.
+ *
+ * @return array An associative array of default filter button options for Isotope.
+ *
+ * The following options are available:
+ * isotope_filter_title:          Defines the title of the filter button group
+ * isotope_filter_reset_label:    Label of the reset button. When set to <none>, the reset button is hidden (not recommended for multi-level filtering)
+ * isotope_filter_multi_select:   TRUE means, more than one button in the filter group can be selected at a time. Reset is done with the 'Show All' button (when present).
+ * isotope_filter_render_flat:   TRUE means, a hierarchical taxonomy vocabulary is rendered as flat button group. Has no meaning for flat taxonomies.
+ */
+function isotope_filter_default_options() {
+  $options = array(
+    'isotope_filter_title' => 'Filter',
+    'isotope_filter_reset_label' => 'Show all',
+    'isotope_filter_multi_select' => false,
+    'isotope_filter_render_flat' => false,
+  );
+
+  // Allow other modules to alter the default options
+  drupal_alter('isotope_filter_default_options', $options);
+
+  return $options;
+}
+
+/**
+ * Add Isotope filter options to an existing form.
+ *
+ * @param $form
+ *   A form array to add Isotope layout options to.
+ * @param $default_values
+ *   An array of default form values.
+ */
+function isotope_add_filter_options_to_form(&$form, $default_values) {
+  $form['isotope_filter_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Filter group title'),
+    '#default_value' => $default_values['isotope_filter_title'],
+    '#description' => t('Give the filter group a title (default: Filter). When set to &lt;none&gt;, the group title is hidden.'),
+    '#size' => 20,
+    '#maxlength' => 20,
+    '#required' => FALSE,
+  );
+  $form['isotope_filter_reset_label'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Filter reset button label'),
+    '#default_value' => $default_values['isotope_filter_reset_label'],
+    '#description' => t('Define the label for the filter reset button. When set to &lt;none&gt;, the reset button is hidden. This is not recommended for multi-level filtering. (default: Show all).'),
+    '#size' => 20,
+    '#maxlength' => 20,
+    '#required' => FALSE,
+  );
+  $form['isotope_filter_multi_select'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow multiple filter selection'),
+    '#description' => t("Allows the selection of multiple filters in a button group (shows all items containing at least one activated filter term). Reset with the 'Show All' button."),
+    '#default_value' => $default_values['isotope_filter_multi_select'],
+    '#required' => FALSE,
+  );
+  $form['isotope_filter_render_flat'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Render flat filter group'),
+    '#description' => t("Renders a hierarchical taxonomy vocabulary as a flat filter button group (default: false). This value has no effect for flat taxonomies."),
+    '#default_value' => $default_values['isotope_filter_render_tree'],
+    '#required' => FALSE,
+  );
+
+  // Allow other modules to alter the form
+  drupal_alter('isotope_filter_options_form', $form, $default_values);
+}
+
+/**
+ * Applies all necessary JS settings for the filter buttons working together with an Isotope container.
+ *
+ * @param $button_group_id
+ *   The CSS selector of the button group element containing the filter buttons.
+ * @param $options
+ *   An associative array of the saved Isotope filter options.
+ *   Contains:
+ *   - isotope_filter_multi_select: Defines, if multiple buttons in the button group can be selected.
+ */
+function isotope_filter_apply($button_group_id, $options = array()) {
+  // Setup Isotope filter settings for specific button group
+  $js_settings = array(
+    'isotope_filter' => array(
+      $button_group_id => array(
+        'filter_multi_select' => $options['isotope_filter_multi_select'],
+      ),
+    ),
+  );
+
+  // Allow other modules to alter the Isotope filter script
+  $context = array(
+    'button_group' => $button_group_id,
+    'options' => $options,
+  );
+  drupal_alter('isotope_filter_script', $js_settings, $context);
+
+  // add script
+  drupal_add_js($js_settings, 'setting');
+
+  // make sure jQuery effects is loaded
+  drupal_add_library('system', 'effects');
+}
+
+/* -----------------------------------------------------------------
+ *  Isotope sort functions
+ * ----------------------------------------------------------------- */
+
+/**
+ * Get default Isotope sort options.
+ *
+ * @return array An associative array of default sort button options for Isotope.
+ *
+ * The following options are available:
+ * isotope_sort_title:         Defines the title of the sort button group
+ * isotope_filter_reset_label: Label of the reset button. When set to <none>, the reset button is hidden (not recommended for multi-level sorting)
+ * isotope_sort_multi_level:   TRUE means, more than one button in the sort group can be selected at a time representing multi-level sorting. Reset is done with the 'None' button (always present).
+ * isotope_sort_sparse:        TRUE means, the buttons are created for sparse sorting (sort criteria naming).
+ */
+function isotope_sort_default_options() {
+  $options = array(
+    'isotope_sort_title' => 'Sort by',
+    'isotope_sort_reset_label' => 'None',
+    'isotope_sort_multi_level' => false,
+    'isotope_sort_sparse' => false,
+  );
+
+  // Allow other modules to alter the default options
+  drupal_alter('isotope_sort_default_options', $options);
+
+  return $options;
+}
+
+/**
+ * Add Isotope sort options to an existing form.
+ *
+ * @param $form
+ *   A form array to add Isotope layout options to an existing form.
+ * @param $default_values
+ *   An array of default form values.
+ */
+function isotope_add_sort_options_to_form(&$form, $default_values) {
+  $form['isotope_sort_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sort button group title'),
+    '#default_value' => $default_values['isotope_sort_title'],
+    '#description' => t('Give the sort button group a title (default: Sort by).'),
+    '#size' => 20,
+    '#maxlength' => 20,
+    '#required' => FALSE,
+  );
+  $form['isotope_sort_reset_label'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Reset button label'),
+    '#default_value' => $default_values['isotope_sort_reset_label'],
+    '#description' => t('Define the label for the reset button. When set to &lt;none&gt;, the reset button is hidden. This is not recommended for multi-level sorting. (default: None).'),
+    '#size' => 20,
+    '#maxlength' => 20,
+    '#required' => FALSE,
+  );
+  $form['isotope_sort_multi_level'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Multi-level sorting'),
+    '#description' => t("Allow multiple sort buttons to be selected in a sort button group (multi-level sorting)."),
+    '#default_value' => $default_values['isotope_sort_multi_level'],
+    '#required' => FALSE,
+  );
+  $form['isotope_sort_sparse'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Sparse sorting'),
+    '#description' => t("Creates buttons for sparse sorting."),
+    '#default_value' => $default_values['isotope_sort_sparse'],
+    '#required' => FALSE,
+  );
+
+  // Allow other modules to alter the form
+  drupal_alter('isotope_sort_options_form', $form, $default_values);
+}
+
+/**
+ * Applies all necessary JS settings for the sort buttons working together with an Isotope container.
+ *
+ * @param $button_group_id
+ *   The CSS selector of the button group element containing the sorting buttons.
+ * @param $options
+ *   An associative array of the saved Isotope filter options.
+ *   Contains:
+ *   - isotope_sort_multi_level: Defines, if multiple sort buttons in the button group can be selected.
+ */
+function isotope_sort_apply($button_group_id, $options = array()) {
+  // Setup Isotope sort settings for specific button group
+  $js_settings = array(
+    'isotope_sort' => array(
+      $button_group_id => array(
+        'sort_multi_level' => $options['isotope_sort_multi_level'],
+      ),
+    ),
+  );
+
+  // Allow other modules to alter the Isotope sort script
+  $context = array(
+    'button_group' => $button_group_id,
+    'options' => $options,
+  );
+  drupal_alter('isotope_sort_script', $js_settings, $context);
+
+  // add script
+  drupal_add_js($js_settings, 'setting');
+}
+
+
+
+/* -----------------------------------------------------------------
+ *  Isotope infinite scroll functions
+ * ----------------------------------------------------------------- */
+
+/**
+ * Get default Isotope infinite scroll options.
+ *
+ * @return array An associative array of default infinite scroll options for Isotope.
+ *
+ * The following options are available:
+ * isotope_iscroll_auto_trigger:         Defines auto triggering
+ * isotope_iscroll_auto_trigger_until:   Defines auto triggering until a number of pages are loaded, after that manual triggering is enabled.
+ * isotope_iscroll_padding:              Defines the distance from the bottom at which to trigger the next page loading.
+ */
+function isotope_iscroll_default_options() {
+  $options = array(
+    'isotope_iscroll_auto_trigger' => true,
+    'isotope_iscroll_auto_trigger_until' => 0,
+    'isotope_iscroll_padding' => 0,
+  );
+
+  return $options;
+}
+
+/**
+ * Add Isotope infinite scrolling options to an existing form.
+ *
+ * @param $form
+ *   A form array to add Isotope infinite scrolling options to an existing form.
+ * @param $default_values
+ *   An array of default form values.
+ */
+function isotope_add_iscroll_options_to_form (&$form, $default_values) {
+  // fields for infinite scrolling definition
+  $form['isotope_iscroll_auto_trigger'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Auto trigger'),
+    '#description' => t('When set to true, triggers the loading of the next set of content automatically when the user scrolls to the bottom of the containing element. When set to false, the required next link will trigger the loading of the next set of content when clicked.'),
+    '#default_value' => $default_values['isotope_iscroll_auto_trigger'],
+  );
+  $form['isotope_iscroll_auto_trigger_until'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Auto trigger until page'),
+    '#description' => t('Set to an integer great than 0 to turn off autoTrigger of paging after the specified number of pages. Requires autoTrigger to be true.'),
+    '#default_value' => $default_values['isotope_iscroll_auto_trigger_until'],
+    '#size' => 10,
+    '#maxlength' => 5,
+  );
+  $form['isotope_iscroll_padding'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bottom padding'),
+    '#description' => t('The distance from the bottom of the scrollable content at which to trigger the loading of the next set of content. This only applies when autoTrigger is set to true.'),
+    '#default_value' => $default_values['isotope_iscroll_padding'],
+    '#size' => 10,
+    '#maxlength' => 5,
+  );
+
+
+}

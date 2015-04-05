@@ -1,0 +1,13 @@
+diff --git a/user_register_notify.module b/user_register_notify.module
+index 9e43eef..6901f67 100644
+--- a/user_register_notify.module
++++ b/user_register_notify.module
+@@ -51,6 +51,8 @@ function user_register_notify_setup_email(&$edit, &$account, $action = 'insert')
+     );
+ 
+     $emails = array();
++    // Set the default 'from' email address
++    $from = variable_get('site_mail', ini_get('sendmail_from'));
+     switch ($notify_type) {
+       case 'Custom':
+         $emails = preg_split('/,[\w]+/', variable_get('user_register_notify_mailto', $from));

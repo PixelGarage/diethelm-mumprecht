@@ -1,0 +1,99 @@
+Version: 1.3 (19.9.2014)
+
+Clone Site from GitHub
+======================
+From a website project only the files in the sites-folder are put under version control (no core files).
+In this folder all user files like the folder sites/default/files and the settings.php file (contains credentials) are excluded.
+
+To create a runnable project from a GitHub clone do the following:
+
+Clone GitHub repository:
+1) Go to directory ~/Sites. This is the document root of the MAMP Apache server.
+2) Extract the newest Drupal Core version to a directory and name it with the project name (e.g. myNewProject).
+3) Delete the sites folder.
+4) Open PHPStorm. In the dialog under QuickStart choose VCS: Checkout from version control.
+5) The 'Clone Repository' dialog opens.
+    Choose the repository to be cloned in the dropdown menu.
+    Set the parent directory to the newly created project folder (the cloned sites folder will be placed inside this folder)
+    Choose always 'sites' for the directory name.
+    --> the sites folder is cloned to the new project folder and is connected with the GitHub version for Pull/Push operations.
+6) Create an empty folder 'files' in the directory ~/Sites/projectFolder/sites/default or if the project is already published
+    on the Stage Server, synchronize the folder from there.
+
+Install the local Database:
+1) Create a new DB in local phpMyAdmin with a unique name pixelgar_dp[ProjectName] (use this pattern)
+2) Import DB-Backup found in folder sites/default/files_private/backup_migrate/manual/db_xy_stage….mysql.gz into new DB (see phpMyAdmin).
+3) Copy the settings.php file from the xySite project into folder ~/Sites/xySite/sites/default (find file in same folder in xySite project)
+4) Replace the db name in this file with the project db name (see above).
+5) Call localhost/update.php in the browser to update the DB, if necessary.
+
+Start website in browser:
+1) Set the document root of MAMP (in Preferences->WeServer) to the new directory, e.g. ~/Sites/projectFolder (important, otherwise site navigation fails)
+2) Enter 'localhost' in browser. The project site opens.
+3) Login to project site:
+User:       dpAdmin
+Passwort:	usual
+
+Start implementing in PHPStorm....
+
+PHPStorm:
+IMPORTANT!!!!!!! Never work in the Master branch, always create a NEW BRANCH for each task you implement.
+
+1) Add a new branch named with a working title (describing what you are doing in this branch).
+2) Implement your task in this branch and push as often as needed to GitHub (code backup).
+3) When you're finished with the task, create a Pull Request (in menu VCS->Git->Create Pull Request)
+    - asked for merging into Master-Branch
+    - give a short description of the work you did, finished...
+    - the task will be merged into the Master by an admin (a discussion about the changes in the branch can be hold on GitHub before integration)
+4) Open a new branch for another task you implement, etc.etc.
+
+
+
+
+
+Installation of new local Drupal Site
+=====================================
+
+Local File structure:
+1) Go to directory ~/Sites. This is the document root of the MAMP Apache server.
+2) Extract the newest Drupal Core version to a directory and name it with the project name (e.g. myNewProject).
+3) Open the xySite project in PHPStorm and pull the newest version from GitHub.
+4) Copy sites-folder of the xySite-Project to the Drupal directory (replacing the sites-Folder of Drupal Core)
+5) IMPORTANT!!!!
+    Delete .git folder in the copied sites-folder to avoid a synchronisation with the xySite
+    (the .git-folder is hidden, show it by entering 'showFiles' in Terminal Application)
+
+Install the local Database:
+1) Create a new DB in local phpMyAdmin with a unique name pixelgar_dp[ProjectName] (use this pattern)
+2) Import DB-Backup found in folder sites/default/files_private/backup_migrate/manual/db_xy_stage….mysql.gz into new DB (see phpMyAdmin).
+3) Replace db-name in settings.php with the new one. User is always pixelgar_dpUser (has all rights).
+
+Start website in browser:
+1) Set the document root of MAMP (in Preferences->WeServer) to the new directory, e.g. ~/Sites/newProject (important, otherwise site navigation fails)
+2) Enter 'localhost' in browser. The new site opens.
+3) Login to new site:
+User:       dpAdmin
+Passwort:	usual
+
+Change basic site settings:
+1) The basic modules are enabled and configured. Enable additional modules used for the project.
+2) Update all modules to the newest version
+
+Settings:
+1) A basic setup is already configured. Change following settings to the corresponding values of your site:
+    Backup and migrate: db backup name and profile
+    Theme: site name, slogan, logo, email etc…
+
+
+PHPStorm:
+1) Add the new Project files to PHPStorm
+2) Add the sites folder to Git with Menu VCS->Import into version control->Create Git repository...
+3) Commit the first version
+4) Add a new branch with a working title (describing what you are doing in this branch).
+5) IMPORTANT!!!!!!! Only work in this branch. Push often to the GitHub (code backup).
+6) When you're finished with the branch, create a Pull Request (in menu VCS->Git->Create Pull Request)
+    - asked for merging into Master-Branch
+    - give a short description of the work you did, finished...
+7) Open a new branch for another task you implement, etc.etc.
+
+

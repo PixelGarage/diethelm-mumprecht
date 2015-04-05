@@ -1,0 +1,8 @@
+; $Id:
+name = Isotope iScroll Views
+description = Provides an infinite scrolling pager for the Isotope container
+package = Isotope
+core = 7.x
+dependencies[] = views
+
+files[] = views_plugin_pager_isotope_iscroll_views.inc

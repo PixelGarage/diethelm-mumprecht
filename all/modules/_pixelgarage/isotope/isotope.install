@@ -1,0 +1,34 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Isotope API module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function isotope_requirements($phase) {
+  $requirements = array();
+  $t = get_t(); // no access to the full Drupal API possible during Drupal install
+
+  if ($phase == 'runtime') {
+    // only runtime check
+    $library = libraries_detect('isotope');
+
+    $requirements['isotope'] = array(
+      'title' => $t('Isotope magical layouts'),
+    );
+    if ($library['installed']) {
+      $requirements['isotope']['value'] = $library['version'];
+      $requirements['isotope']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['isotope']['value'] = $library['error'];
+      $requirements['isotope']['description'] = $library['error message'];
+      $requirements['isotope']['severity'] = REQUIREMENT_ERROR;
+    }
+  }
+
+  return $requirements;
+}
+

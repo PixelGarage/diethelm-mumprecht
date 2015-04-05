@@ -1,0 +1,9 @@
+name = Isotope Filter Views
+description = "Provides a views style plugin allowing to create a hierarchical or flat filter button group for an Isotope layout."
+core = 7.x
+package = Isotope
+
+files[] = views_plugin_style_isotope_filter_views.inc
+
+dependencies[] = isotope
+dependencies[] = views

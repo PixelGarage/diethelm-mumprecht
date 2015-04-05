@@ -1,0 +1,9 @@
+name = Isotope Sort Views
+description = "Provides a views plugin allowing to create a sort button group for an Isotope layout."
+core = 7.x
+package = Isotope
+
+files[] = views_plugin_style_isotope_sort_views.inc
+
+dependencies[] = isotope
+dependencies[] = views

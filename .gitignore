@@ -1,0 +1,9 @@
+# Ignore configuration files that may contain sensitive information.
+default/settings*.php
+
+# Ignore paths that contain user-generated content.
+default/files/
+
+# ignore project settings and
+.idea/
+**/.DS_Store

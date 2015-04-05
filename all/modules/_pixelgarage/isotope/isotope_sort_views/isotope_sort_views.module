@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * Provides a Views plugin for displaying sort buttons for an Isotope magical layout.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function isotope_sort_views_views_api() {
+  return array('api' => 3);
+}
+
+/**
+ * Preprocess function for theme hook views_view_isotope_sort (implemented as views_view_isotope_sort.tpl.php).
+ */
+function template_preprocess_views_view_isotope_sort(&$vars) {
+  // Run preprocess function for unformatted style
+  template_preprocess_views_view_unformatted($vars);
+
+  // clean taxonomy terms to be usable for sort button group
+  $options = $vars['options'];
+  $rows = $vars['rows'];
+  $sort_criteria = array();
+  $classes_array = sizeof($vars['classes_array']) > 0 ? $vars['classes_array'] : array();
+  $reset_label = ($options['isotope_sort_reset_label'] === '<none>') ? '' : $options['isotope_sort_reset_label'];
+
+
+  foreach ($rows as $id => $row) {
+    $row = trim($row);
+    $clean_row = drupal_clean_css_identifier(strtolower($row));
+    $vars['rows'][$id] = $row;
+    if ($options['isotope_sort_sparse']) {
+      $sort_criteria[$id] = 'sort-criteria-' . $clean_row;
+    } else {
+      $sort_criteria[$id] = 'sort-criteria-' . $id;
+    }
+    $classes_array[$id] .= ' ' . $clean_row;
+  }
+
+  // get options and add unique id for button group
+  $view =  $vars['view'];
+
+  $button_group_id = 'sort-buttons-' . $view->vid . '-' . drupal_clean_css_identifier($view->current_display);
+  $vars['button_group_id'] = $button_group_id;
+  $vars['title'] = $options['isotope_sort_title'];
+  $vars['reset_label'] = t($reset_label);
+  $vars['sort_criteria'] = $sort_criteria;
+  $vars['classes_array'] = $classes_array;
+
+  isotope_sort_apply($button_group_id, $options);
+}
+

@@ -1,0 +1,2305 @@
+/*
+ * @file
+ * global.styles
+ *
+ * Styles you add here will load for all device sizes, they are "global", as
+ * opposed to "responsive" styles, which only load for a given breakpoint (media
+ * query) that you set in theme settings. See the README for more details.
+ *
+ *
+ * How to use this file:
+ * --------------------
+ *
+ * There are many empty selectors and some basic styles to act as a guide.
+ * Nothing is set in stone and you can change anything - even delete all of it
+ * and start with your own clean slate.
+ *
+ * See global.base also which includes normalize.css and some additional
+ * helper classes and base styles.
+ *
+ *
+ *
+ *  Style precedence in CSS (Specificity, Inheritance, Cascade)
+ *  -----------------------------------------------------------
+ *
+ *  Specificity:    a) Inline Style
+ *  (a,b,c,d)       b) Id
+ *                  c) Class, Pseudo-class, attribute
+ *                  d) Element, pseuo-element
+ *
+ *                          Example: div#sidebar p.bio -> 2 elements, 1 class, 1 id –> (0,1,1,2)
+ *
+ *
+ *  Inheritance:    Elements inherit styles from their parent container.
+                    "inherit" let you inherit margin, padding etc. from parent container.
+ *
+ *
+ *  Cascade:        - Site-Author (these files) OVER Site-User(Style settings in browser) OVER Browser Defaults
+ *                  - !importance has more weight than normal declarations
+ *                  - Equal specificity: last wins
+ *
+ *                  TIP: Normalizing (see above) takes browser defaults and cross browser issues out of equation!!!
+ */
+
+/* =============================================================================
+ *   Colors used for web site
+ * =============================================================================
+    text-black:         #222222
+    text-white:         #eeeeee
+    text-hover:         #808080
+    blue:               #365C6E, rgba(54,92,110,1.0)
+    marker-red:         #b51a00
+
+  =============================================================================*/
+
+
+/* =============================================================================
+ *   Fonts
+ * ========================================================================== */
+@font-face {
+    font-family: 'amiraregular';
+    src: url('../fonts/amira-regular/amira-regular-webfont.eot');
+    src: url('../fonts/amira-regular/amira-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/amira-regular/amira-regular-webfont.woff2') format('woff2'),
+    url('../fonts/amira-regular/amira-regular-webfont.woff') format('woff'),
+    url('../fonts/amira-regular/amira-regular-webfont.ttf') format('truetype'),
+    url('../fonts/amira-regular/amira-regular-webfont.svg#amiraregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: "SSSocial";
+    src: url('../fonts/ss-social/ss-social-circle.eot');
+    src: url('../fonts/ss-social/ss-social-circle.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/ss-social/ss-social-circle.woff') format('woff'),
+    url('../fonts/ss-social/ss-social-circle.ttf') format('truetype'),
+    url('../fonts/ss-social/ss-social-circle.svg#SSSocialCircle') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+
+/* =============================================================================
+ *   General reset
+ * ========================================================================== */
+#main-content,
+.block-inner,
+.pane-inner,
+.menu-wrapper,
+.branding-elements,
+.breadcrumb-wrapper,
+.attribution,
+.at-panel .rounded-corner,
+.block-panels-mini > .block-title,
+div.messages {
+    margin: 0;
+}
+
+/*
+ * AT regions (top and nested regions)
+ */
+#content .at-panel,
+.at-panel > .region > .region-inner,
+.at-panel .at-panel > .region > .region-inner {
+    margin: 0;
+}
+
+/*
+ * Blocks
+ */
+.block,
+.block > .block-inner,
+.block .block-title {
+    margin: 0;
+}
+
+
+/* =============================================================================
+ *   Base
+ * ========================================================================== */
+
+/*
+ * To preserve theme settings never apply font properties to the HTML element.
+ * This is critically important if you are using the Responsive JavaScript
+ * feature as this relies on being able to set a pseudo font family on the HTML
+ * element. If you need to set default font properties of any kind use the BODY
+ * element as these can be overridden using font theme settings.
+ */
+
+html {
+    background: #fff;
+    height: 100%;
+}
+
+
+body {
+  font-family: "amiraregular", Arial, Helvetica, sans-serif;
+  font-size: 100%;  /* corresponds to 16px */
+}
+
+
+/* =============================================================================
+ *   HTML Elements
+ * ========================================================================== */
+/* and if we have headings with defined styles we'd also add */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;   /* unitless line-height: element multiply this value with its computed font-sizes */
+}
+
+p {
+    font-size: 1em;
+    line-height: 1.1;     /* unitless line-height: element multiply this value with its computed font-sizes */
+}
+
+
+pre,
+code,
+tt,
+samp,
+kbd,
+var {
+    font-family: Consolas, Monaco, 'Courier New', Courier, monospace, sans-serif;
+}
+
+
+/* =============================================================================
+ *   Links and fields
+ * ========================================================================== */
+a,
+a:link,
+a:visited {
+    outline: none;
+    text-decoration: none;
+    color: #222;
+}
+
+a:active,
+a.active,
+a:hover,
+a:focus {
+    outline: none;
+    text-decoration: underline;
+    color: #365C6E;
+}
+
+/*
+ *  Text areas resizing handlers
+ */
+.resizable-textarea .grippie {
+    display: none;
+}
+
+.field-label {
+    /* table layout */
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.5;
+    font-weight: bold;
+    color: #222;
+    width: 7em;
+}
+
+/* Read more link */
+.field-name-node-link {
+    margin: 0 1.2em;
+    float: right;
+}
+.field-name-node-link a:after {
+    content: '\f054';
+    font-family: "fontawesome";
+    font-size: 1em;
+    padding-left: 1em;
+}
+
+/* Google map */
+.google_map_field_display {
+    height: 20em;
+    width: 100%;
+    margin: 0;
+}
+
+/* =============================================================================
+ *   Wrappers
+ * ========================================================================== */
+#page, .container {
+    position:relative;
+    margin: 0 auto;
+    width:auto;
+    padding: 0;
+}
+
+#header,
+#menu-bar,
+#breadcrumb,
+#messages,
+#columns,
+#comments,
+#footer,
+.region-leaderboard,
+.region-help,
+.region-secondary-content,
+.region-tertiary-content {
+    margin: 0;
+    padding: 0;
+}
+#header {
+    position: fixed;
+    top: 0;
+    height: 100px;
+    width: 1280px;
+    max-width: 100%;
+    background-color: rgba(255,255,255,1.0);
+    box-shadow: none;
+    z-index: 100;
+}
+#messages {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 190px auto 0;
+    width: 75%;
+}
+#columns {
+    position: relative;
+    margin: 200px auto 100px;
+    width: 90%;
+}
+
+/*
+ * Top and bottom menus wrappers
+ */
+.region-leaderboard > .region-inner {
+    margin: 0;
+}
+.region-help > .region-inner,
+.region-secondary-content > .region-inner {
+    margin-top: 1em;
+}
+.region-tertiary-content > .region-inner {
+    margin: 2em 0;
+}
+
+/*
+ * Menu bar wrapper
+ */
+#menu-bar > nav.menu-bar-wrapper {
+    margin-top: 1em;
+}
+/*
+ * Breadcrumb wrapper
+ */
+#breadcrumb > nav.breadcrumb-wrapper {
+    margin-top: 1em;
+}
+/*
+ * Main content wrapper
+ */
+#columns > .content-column > .content-inner {
+    margin: 0;
+}
+/*
+ * Footer wrapper
+ */
+#footer > .region-footer > .region-inner {
+    margin: 0.5em 0 0;
+}
+
+
+/* =============================================================================
+ *   Branding
+ * ========================================================================== */
+/*
+ * Wraps all the branding elements, logo, name and slogan
+ */
+#branding {
+    margin: 0;
+    text-align: center;
+}
+
+/*
+ * Logo
+ */
+#logo {
+    display: inline-block;
+    margin: 1.2em 0;
+    padding: 0;
+    max-width: 300px;
+}
+
+#logo img {
+    width: 100%;
+    vertical-align: middle;
+}
+
+/*
+ * Wrapper for the site name and slogan (hgroup)
+ */
+#name-and-slogan {
+    display: block;
+    margin: 0;
+}
+
+/*
+ * Site name (h1)
+ */
+#name-and-slogan #site-name {
+    position: relative;
+    margin: 0;
+    font: inherit;
+}
+
+#site-name a,
+#site-name a:link {
+    text-decoration: none;
+    color: #222222;
+}
+
+#site-name a:hover,
+#site-name a:focus {
+    text-decoration: none;
+    color: #808080;
+}
+
+/*
+ * Site slogan (h2)
+ */
+#name-and-slogan #site-slogan {
+    position: relative;
+    margin: 0;
+    font: inherit;
+}
+
+
+/* =============================================================================
+ *  Main menu in header
+ * ========================================================================== */
+nav.block-main-menu {
+    text-align: center;
+}
+nav.block-main-menu ul {
+    display: inline-block;
+    margin: 0;
+    padding:0;
+    white-space: nowrap;
+}
+
+nav.block-main-menu ul li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style: none none;
+}
+nav.block-main-menu ul li:not(:first-child) {
+    border-left: 1px solid #222;
+}
+nav.block-main-menu ul li a,
+nav.block-main-menu ul li a:visited {
+    display: block;
+    padding: 0.625em 1em 0.1em;
+    font-size: 0.8em;
+    line-height: 1;
+    color: #222;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+}
+
+nav.block-main-menu ul li a:hover,
+nav.block-main-menu ul li a:active,
+nav.block-main-menu ul li a.active,
+nav.block-main-menu ul li a:focus {
+    text-decoration: underline;
+}
+nav.block-main-menu ul li a:hover{
+    color: #365C6E;
+}
+/* =============================================================================
+ *   Search box in header
+ * ========================================================================== */
+#header #search-box {
+    position: absolute;
+    top: 48px;
+    right: 20px;
+    z-index: 6;
+}
+#header #search-box form {
+    margin: 0;
+}
+#header #search-box .form-type-textfield label,
+#header #search-box .form-submit {
+    display: none;
+}
+#header #search-box .form-type-textfield {
+    margin: 0;
+}
+#header #search-box .form-type-textfield input {
+    width: 75px;
+    font-size: 13px;
+    text-indent: 15px;
+    line-height: 1;
+    border: none;
+    background: #f8f8f8 url("images/icon_search.png") no-repeat 0 2px;
+}
+
+
+/* =============================================================================
+ *   Top menu (login, meta), bottom menu (copyright, legal)
+ * ========================================================================== */
+/*
+ *   meta menu, login menu, legal menu
+ */
+#block-menu-menu-meta-menu {
+    display:inline-block;
+    float: right;
+    font-size: 1.0em;
+}
+#block-menu-menu-legal-menu,
+#block-menu-menu-copyright-menu,
+#block-system-user-menu {
+    display:inline-block;
+    float: right;
+    font-size: 0.8em;
+}
+#block-menu-menu-copyright-menu {
+    float: left;
+}
+#block-menu-menu-meta-menu .block-inner,
+#block-system-user-menu .block-inner,
+#block-menu-menu-legal-menu .block-inner,
+#block-menu-menu-copyright-menu  .block-inner {
+    margin: 0;
+}
+
+#block-menu-menu-meta-menu ul.menu,
+#block-system-user-menu ul.menu,
+#block-menu-menu-legal-menu ul.menu,
+#block-menu-menu-copyright-menu ul.menu {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+
+#block-menu-menu-meta-menu ul.menu li {
+    display:inline-block;
+    margin: 0;
+    padding: 0 0.625em;
+    border-left: 1px solid #808080;
+}
+#block-menu-menu-meta-menu ul.menu li:first-child {
+    border: none;
+}
+#block-menu-menu-legal-menu ul.menu li,
+#block-menu-menu-copyright-menu ul.menu li,
+#block-system-user-menu ul.menu li {
+    display:inline;
+    margin: 0;
+    padding-right: 1em;
+    float: left;
+}
+
+#block-menu-menu-meta-menu ul.menu li a,
+#block-system-user-menu ul.menu li a,
+#block-menu-menu-legal-menu ul.menu li a,
+#block-menu-menu-copyright-menu ul.menu li a {
+    color: #222;
+}
+
+#block-menu-menu-meta-menu ul.menu li a:hover,
+#block-system-user-menu ul.menu li a:hover,
+#block-menu-menu-legal-menu ul.menu li a:hover,
+#block-menu-menu-copyright-menu ul.menu li a:hover {
+    color: #808080;
+}
+
+/* Stars on legal and user menu */
+#block-system-user-menu ul.menu li a:before,
+#block-menu-menu-legal-menu ul.menu li a:before,
+#block-menu-menu-copyright-menu ul.menu li a:before {
+    font-family: FontAwesome;
+    content: "\f006";
+    padding-right: 1em;
+    color: #222;
+}
+#block-system-user-menu ul.menu li a:hover:before,
+#block-menu-menu-legal-menu ul.menu li a:hover:before,
+#block-menu-menu-copyright-menu ul.menu li a:hover:before {
+    font-family: FontAwesome;
+    content: "\f005";
+    padding-right: 1em;
+    color: #222;
+}
+
+
+/* =============================================================================
+ *   Primary, Secondary and Menu Bar region menus
+ * ========================================================================== */
+/*
+ * Use one of the following id's for granular control:
+ *  - #menu-bar (menu bar region)
+ *  - #primary-menu (main menu)
+ *  - #secondary-menu (secondary/user menu)
+ * You can target all of these with .nav or div[id$="menu-bar"]
+ */
+
+/* =============================================================================
+ *   Superfish accordion menu (Mobile first)
+ * ========================================================================== */
+/*
+  * Toggle button
+  */
+div.sf-accordion-toggle {}
+a#superfish-1-toggle {
+    outline: none;
+}
+a#superfish-1-toggle:before {
+    font-family: FontAwesome;
+    content: "\f039";
+    display: inline-block;
+    padding: 0;
+    font-size: 2em;
+    color: rgba(115,133,119,1.0);
+}
+a#superfish-1-toggle span {
+    padding-left: 1em;
+    font-size: 1.5em;
+    color: #222;
+    vertical-align: 0.1em;
+}
+a#superfish-1-toggle.sf-expanded:before {
+    font-family: FontAwesome;
+    content: "\f039";
+    display: inline-block;
+    padding: 0;
+    color: #222;
+    font-size: 2em;
+}
+
+
+/*
+ * Accordion menu
+ */
+#superfish-1-accordion {}
+#superfish-1-accordion > li > ul {}
+
+#superfish-1-accordion li {
+    /* all list items */
+}
+
+#superfish-1-accordion li a,
+#superfish-1-accordion li a:link,
+#superfish-1-accordion li a:visited {
+    /* all list links */
+    display: block;
+    white-space: nowrap;
+    font-size: 1.2em;
+    line-height: 2.5;
+    color: #222;
+    text-decoration: none;
+    outline: none;
+}
+#superfish-1-accordion li a:hover,
+#superfish-1-accordion li a:focus {
+    /* all item hovering */
+    color: #808080;
+    outline: none;
+}
+
+#superfish-1-accordion li.sf-depth-2 {
+    /* specific list item level */
+}
+
+/* =============================================================================
+ *   Superfish menu normal (flexible breakpoint Mobile - Normal)
+ * ========================================================================== */
+#block-superfish-1 {
+    margin: 0;
+}
+
+#superfish-1 {
+    float: left; /* float parent to contain children */
+    width: 100%;
+    /* Extend menu to fill whole width */
+    margin: 0 -9999em;
+    padding: 0 9999em;
+    color: #222;
+    white-space: nowrap;
+    background-color: rgba(188,217,194,0.5);
+}
+
+#superfish-1 ul {
+    margin: 0;
+    padding-left: 0;
+}
+
+#superfish-1 > li {
+    width: 25%;
+    height: 40px;
+    margin: 0;
+    background-color: rgba(188,217,194,0.5);
+}
+
+#superfish-1 li a,
+#superfish-1 li a:link,
+#superfish-1 li a:visited {
+    height: 40px;
+    padding: 0 1.25em;
+    font-size: 1.25em;
+    line-height: 40px;
+    color: #222;
+    text-decoration: none;
+    outline: 0;
+    border-left: 0;
+    border-top: 0;
+}
+#superfish-1 li:hover,
+#superfish-1 li.sfHover,
+#superfish-1 a:hover,
+#superfish-1 a:focus,
+#superfish-1 a:active {
+    outline: 0;
+    color: #eee;
+    background-color: rgba(188,217,194,1.0);
+}
+
+#superfish-1 > li a.sf-depth-1 {
+    text-align: center;
+    border-right: 1px solid #ff9933;
+}
+
+#superfish-1 > li:first-child a.sf-depth-1 {
+    border-left: 1px solid #ff9933;
+}
+
+#superfish-1 li li {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background-color: rgba(188,217,194,0.5);
+}
+#superfish-1 li li li {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background-color: rgba(188,217,194,0.5);
+}
+
+#superfish-1 a > .sf-sub-indicator {
+    display: none;  /* no drop-down arrow */
+}
+
+
+
+/* =============================================================================
+ *   Breadcrumbs
+ * ========================================================================== */
+
+#breadcrumb {
+    /*display: none;*/
+    margin: 0;
+    padding: 0;
+}
+
+/* Breadcrumb label: If the label is set to show in theme settings the label class is added */
+#breadcrumb .breadcrumb-label {
+    display: inline;
+    font-size: 1em;
+    padding-right: 0.5em;
+}
+#breadcrumb .breadcrumb-label:after {
+    content: ":";
+}
+
+#breadcrumb .with-breadcrumb-label ol {
+    display: inline;
+}
+#breadcrumb ol {
+    margin: 0;
+    padding: 0;
+}
+
+/* Breadcrumb items */
+#breadcrumb li {
+    display: inline-block;
+    list-style: none;
+}
+#breadcrumb li.crumb:before {
+    content: '';
+    color: #222;
+    text-indent: 0.8em;
+    background: url('images/circle.png') no-repeat left center;
+    background-size: 0.5em;
+}
+#breadcrumb li.crumb a:hover {
+    color: rgba(115,133,119,1.0);
+}
+
+/* Breadcrumb seperator */
+#breadcrumb .crumb-sepreator:before {
+    font-family: FontAwesome;
+    content: "\f054";
+    display: inline-block;
+    padding: 0 1em;
+    font-size: 1em;
+    color: rgba(115,133,119,1.0);
+}
+
+
+
+/* =============================================================================
+ *   Messages
+ * ========================================================================== */
+
+/* Left and right margin are set by the global gutter width */
+div.messages {
+    margin-bottom: 0.625em;
+    margin-top: 0.625em;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    border-radius: 0.4em;
+}
+
+div.messages ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+div.status {}
+
+div.warning {}
+
+tr.warning {}
+
+div.error,
+tr.error {}
+
+.error {}
+
+.warning {}
+
+
+/* =============================================================================
+ *   Pagers
+ * ========================================================================== */
+
+ul.pager {
+    clear: both;
+    margin: 0;
+    text-align: center;
+}
+
+.item-list ul.pager li {
+    margin: 0;
+}
+
+ul.pager li {
+    background-image: none;
+    display: inline;
+    list-style-type: none;
+    padding: .5em;
+}
+
+ul.pager li.pager-current {
+    font-weight: 700;
+}
+
+.block ul.pager li {
+    margin: 0;
+}
+
+/*
+ * Theme the various states of pager links
+ */
+ul.pager li {}
+
+ul.pager li a {}
+
+ul.pager li a:link,
+ul.pager li a:visited {}
+
+ul.pager li a:active,
+ul.pager li a.active {}
+
+ul.pager li a:hover,
+ul.pager li a:focus {}
+
+ul.pager li.pager-item {}
+ul.pager li.first {}
+ul.pager li.last {}
+ul.pager li.pager-current {}
+ul.pager li.pager-first {}
+ul.pager li.pager-previous {}
+ul.pager li.pager-next {}
+ul.pager li.pager-last {}
+
+
+/* =============================================================================
+ *   Forms
+ * ========================================================================== */
+/*
+ * Wrapper for a form element (or group of form elements) and its label
+ */
+.form-item input.error,
+.form-item textarea.error,
+.form-item select.error {
+    border: 1px solid #b51a00;
+}
+
+#content form {
+    overflow: hidden;  /* Prevents floating form buttons to be outside of form */
+    border-top: 1px solid #5c5c5c;
+}
+
+.form-item div.description {
+    padding: 0.2em 0;
+}
+
+.form-item label {
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: normal;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #5c5c5c;
+}
+.form-item label span.form-required {
+    color: #365C6E;
+}
+
+.form-item .form-checkboxes label,
+.form-item .form-checkboxes input,
+.form-item .form-radios label,
+.form-item .form-radios input {
+    width: auto;
+    padding-left: 0.1em;
+}
+.form-item .form-checkboxes input,
+.form-item .form-radios input {
+    vertical-align: text-top;
+}
+
+.form-item .form-checkboxes,
+.form-item .form-radios {
+    display: block;
+    width: 100%;
+}
+.form-item .form-checkboxes .form-item.form-type-checkbox,
+.form-item .form-radios .form-item.form-type-radio {
+    display: inline-block;
+}
+
+.form-item input,
+.form-item textarea {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    outline: none;
+    color: #365C6E;
+    border: 1px solid #fff;
+    -moz-border-radius: 0; /* Firefox */
+    -webkit-border-radius: 0; /* Safari and Chrome */
+    border-radius: 0; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+    background-color: rgba(248,248,248,1.0);
+}
+
+.form-item input:focus,
+.form-item textarea:focus {
+    box-shadow: 0 0 0.2em #365C6E inset;
+    outline: none;
+}
+input[type="file"],
+input[type="submit"] {
+    width:auto;
+    padding: 0.375em 0.625em;
+    font-size: 0.8em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #5c5c5c;
+    border: 1px solid #e6e6e6;
+    -moz-border-radius: 0; /* Firefox */
+    -webkit-border-radius: 0; /* Safari and Chrome */
+    border-radius: 0; /* Opera 10.5+, future browsers, and now also Internet Explorer 6+ using IE-CSS3 */
+    background-color: rgba(233,233,233,1.0);
+}
+input[type="submit"] {
+    display: block;
+    float: right;
+    font-size: 1em;
+}
+input[type="submit"]:hover {
+    color: #365C6E;
+    background: none;
+}
+
+/*
+ *  Form fieldsets
+ */
+form fieldset {
+    position:relative;
+    margin: 1em 0;
+    padding: 3em 0 0;
+    background: none;
+    border: none;
+}
+form fieldset legend {
+    /* position legend inside fieldset */
+    position:absolute;
+    top:10px;
+    left: 0;
+    font-size: 1em;
+    font-weight: bolder;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #5c5c5c;
+
+}​
+ form fieldset span.button-operator {
+     display: none;
+ }
+
+/* =============================================================================
+ *   Comment Styling - Comments, comment wrapper, comment form
+ * ========================================================================== */
+
+/*
+ * Wrapper for the list of comments and its titles
+ */
+#comments {
+    overflow: hidden;
+    margin: 0;
+}
+
+#comments h2 {
+    border-bottom: 1px solid rgba(115,133,119,1.0);
+}
+
+#comments h2.comment-form,
+#comments h2.comment-title {
+    margin: 1.25em 0;
+    padding-left: 0.625em;
+    font-weight: normal;
+    color: #222;
+
+}
+
+/*
+ * Wrapper for a single comment
+ */
+.comment,
+#comments .at-panel {
+    margin: 1.25em 0;
+    padding: 0.625em 0;
+    border-top: 1px solid rgba(115,133,119,1.0);
+}
+
+.comment:first-of-type,
+#comments > .at-panel:first-of-type {
+    border-top: none;
+}
+
+.comment.odd {}
+
+.comment.even {}
+
+/*
+ * Preview of the comment before submitting new or updated comment
+ */
+#comments .comment-form,
+#comments .comment-preview {
+    overflow: hidden;  /* Prevents floating buttons to be outside form */
+    padding: 0.625em;
+}
+
+/*
+ * Nested comments are indented
+ */
+#comments .indented {
+    margin-left: 2.5em;
+}
+
+/*
+ * "New" marker for comments that are new for the current user
+ */
+.new {
+    color: #b51a00;
+}
+
+
+/* =============================================================================
+ *   Tables
+ * ========================================================================== */
+
+table {
+    margin: 0.625em 0;
+    padding: 0;
+    width: 100%;
+}
+
+table.sticky-header {
+    z-index: 10;
+}
+
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+    border-color: #ccc;
+}
+
+table,
+td,
+th {
+    vertical-align: middle;
+}
+
+caption,
+th,
+td {
+    text-align: left;
+}
+
+thead tr {
+    font-weight: 700;
+    background-color: #e5e5e5;
+
+}
+
+td,
+th {
+    border-bottom: 0;
+    margin: 0;
+    padding: 0.375em 0.5em;
+}
+
+tbody {}
+
+tbody tr {
+    border-top: 1px solid #ccc;
+}
+
+tr.odd {
+    background: #fff;
+}
+
+tr.info,
+tr.even,
+tr:nth-child(2n+2) {
+    border-bottom: 0;
+    background-color: #f5f5f5;
+}
+
+tr.drag {}
+
+tr.drag-previous {}
+
+tr.odd td.active {
+    background-color: #eee;
+}
+
+tr.even td.active {
+    background-color: #ebebeb;
+}
+
+/* =============================================================================
+ *   Misc Global reset
+ * ========================================================================== */
+/*
+ *   Action links
+ */
+
+ul.action-links {
+    margin: 1.25em 0 0;
+    list-style: none;
+}
+
+ul.action-links li {}
+
+/*
+ * Generic styles for the more link
+ */
+.more-link {}
+
+/*
+ * Generic styles for links. See the ul.links declaration in node and comment stylesheets
+ */
+ul.links {
+    margin: 0;
+    padding: 0;
+}
+
+ul.links.inline {
+    display: block;
+}
+
+ul.links li {
+    display: inline;
+    list-style: none;
+    padding: 0 0.625em 0 0;
+}
+
+/*
+ * Feed icons
+ */
+.feed-icon {}
+
+/*
+ * Aggregator feed source
+ */
+#aggregator .feed-source .feed-icon {
+    display: inline;
+    float: none;
+    margin-right: 0.625em;
+}
+
+.feed-details dt,
+.feed-details dd {
+    display: inline;
+    margin: 0;
+}
+
+/*
+ * Search results are an ordered list so reset the margin
+ */
+.search-results {
+    margin: 0;
+}
+
+/*
+ * Buttons used by contrib modules like Media
+ */
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+}
+
+/*
+ * Password confirmation
+ */
+.password-parent,
+.confirm-parent {
+    margin: 0;
+}
+
+
+
+/* =============================================================================
+ *
+ *
+ *      Administrator mode specific element styling starts here...
+ *
+ *
+ * ========================================================================== */
+
+/*
+ * Admin menu overrides
+ */
+#admin-menu {
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * Devel Module
+ */
+.dev-query {
+    background: #eee;
+    padding: 2em;
+}
+
+/*
+ * Styleguide module tweaks
+ */
+#styleguide-header {
+    padding: 0 0.625em;
+}
+
+#styleguide-header .item-list {
+    font-family: inherit;
+    margin: 0 1.25em 1.25em 0;
+    min-height: 260px;
+    width: auto;
+}
+
+#tasks {
+    margin-bottom: 1em;
+}
+
+
+/* =============================================================================
+ *   Tabs (local tasks)
+ * ========================================================================== */
+
+ul.primary {
+    border-bottom-color: #ccc;
+    margin: 1.25em 0;
+    padding: 0 0 0 5px;
+}
+
+ul.primary li {
+    display: block;
+    float: left;
+    margin: 0 1px -1px;
+}
+
+ul.primary li a {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+    margin-right: 1px;
+    padding: 0 0.625em;
+    display: block;
+    float: left;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+ul.primary li a:hover,
+ul.primary li a:focus {
+    background-color: #eee;
+    border-color: #ccc;
+}
+
+ul.primary li.active a,
+ul.primary li.active a:hover,
+ul.primary li.active a:focus {
+    background-color: #fff;
+    border-bottom-color: #fff;
+}
+
+ul.secondary {
+    border-bottom: 1px solid #ccc;
+    margin: 1em 0 0;
+    padding: 0 .3em 1em;
+}
+
+ul.secondary li {
+    border-right: 0;
+    list-style: none;
+    padding: 0 0.625em 0 0;
+}
+
+ul.secondary li a {}
+
+ul.secondary li a:hover,
+ul.secondary li a.active {
+    border-bottom: none;
+    text-decoration: underline;
+}
+
+
+/* =============================================================================
+ *   Unpublished nodes
+ * ========================================================================== */
+
+/*
+ * Unpublished nodes
+ */
+.node-unpublished,
+.comment-unpublished {}
+
+.node-unpublished,
+.comment-unpublished {}
+
+.node-unpublished p.unpublished,
+.comment-unpublished p.unpublished {
+    color: pink;
+    color: rgba(239, 170, 170, 0.4);
+    font-family: Impact,"Arial Narrow",Helvetica,sans-serif;
+    font-size: 4em;
+    font-weight: bold;
+    height: 0;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    text-align: center;
+    text-transform: uppercase;
+    word-wrap: break-word;
+}
+
+
+/* =============================================================================
+ *    Maintenance pages
+ * ========================================================================== */
+
+.maintenance-page {}
+.maintenance-page .container {
+    padding: 2.5em 0;
+}
+
+.maintenance-page #site-name,
+.maintenance-page #page-title {
+    margin: 0;
+}
+
+.db-offline {}
+
+.db-offline .container {
+    margin: 0 auto;
+    padding: 2.5em 0;
+    width: 100%;
+    max-width: 960px;
+}
+
+.db-offline div.messages {
+    margin: 1.25em 0 0;
+}
+
+.db-offline #content {
+    padding: 1.25em 0;
+}
+
+
+
+
+/* =============================================================================
+ *
+ *
+ *      Common Blocks starts here...
+ *
+ *
+ * ========================================================================== */
+
+/* =============================================================================
+ *   Follow block
+ * ========================================================================== */
+#block-follow-site .block-inner {
+    margin: 0;
+}
+#block-follow-site .follow-links {
+    max-width: 50em;
+    margin: 0 auto;
+    text-align: center;
+}
+#block-follow-site .follow-links a.follow-link {
+    float: none;
+    display: inline-block;
+    background-image: none !important;
+    padding: 0.1em 0.5em;
+    height: auto;
+    font-size: 1.5em;
+    line-height: 1.5;
+    color: #222;
+    border: solid 0.08em #222;
+    border-radius: .1em;
+}
+#block-follow-site .follow-links .follow-link-this-site:after {
+    font-family: FontAwesome;
+    content: "\f09e";
+}
+#block-follow-site .follow-links .follow-link-facebook:after {
+    font-family: FontAwesome;
+    content: "\f09a";
+}
+#block-follow-site .follow-links .follow-link-googleplus:after {
+    font-family: FontAwesome;
+    content: "\f0d5";
+}
+#block-follow-site .follow-links .follow-link-xing:after {
+    font-family: FontAwesome;
+    content: "\f168";
+}
+#block-follow-site .follow-links .follow-link-linkedin:after {
+    font-family: FontAwesome;
+    content: "\f0e1";
+}
+
+/* =============================================================================
+ *   ShareThis links block
+ * ========================================================================== */
+.block-sharethis .block-inner {
+    margin: 0;
+}
+.block-sharethis .block-inner .sharethis-wrapper {
+    max-width: 50em;
+    margin: 0 auto;
+    text-align: center;
+}
+.sharethis-wrapper > span .stButton .stLarge {
+    background-image: none !important;
+    font-size: 2em;
+    color: #222;
+}
+
+.st_facebook_large .stButton .stLarge:before {
+    font-family: FontAwesome;
+    content: "\f09a";
+    display: inline-block;
+    padding: 0;
+}
+.st_twitter_large .stButton .stLarge:before {
+    font-family: FontAwesome;
+    content: "\f099";
+    display: inline-block;
+    padding: 0;
+}
+.st_googleplus_large .stButton .stLarge:before {
+     font-family: FontAwesome;
+     content: "\f0d5";
+     display: inline-block;
+     padding: 0;
+}
+.st_pinterest_large .stButton .stLarge:before {
+    font-family: FontAwesome;
+    content: "\f0d2";
+    display: inline-block;
+    padding: 0;
+}
+.st_sharethis_large .stButton .stLarge:before {
+    font-family: FontAwesome;
+    content: "\f1e0";
+    display: inline-block;
+    padding: 0;
+}
+
+
+/* =============================================================================
+ *
+ *
+ *      jQuery UI (1.10 up) / other widgets starts here...
+ *
+ *
+ * ========================================================================== */
+
+/* =============================================================================
+ *   General settings (header, content, border, corner, states, icon)
+ * ========================================================================== */
+.ui-widget {
+    font-family: inherit;
+    font-size: 1em;
+    margin: 0.5em 0 1em;
+}
+.ui-widget-header {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #222;
+    text-decoration: none;
+    background: none;
+    border: 1px solid #ccc;
+}
+.ui-widget-content {
+    color: #222222;
+    background: none;
+    border: 1px solid #ccc;
+}
+
+/* corners */
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 0.25em;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+    border-top-left-radius: 0.25em;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 0;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 0;
+}
+
+/* states */
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+    font-weight: 400;
+    color: #808080;
+    border: 1px solid #bbb;
+    background: #ddd none;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    font-weight: 400;
+    color: #222;
+    border: 1px solid #ccc;
+    background: #fff none;
+}
+.ui-widget .ui-state-default a, .ui-widget .ui-state-default a:link, .ui-widget .ui-state-default a:visited {
+    color: #808080;
+    text-decoration: none;
+    outline: none;
+}
+.ui-widget .ui-state-active a, .ui-widget .ui-state-active a:link, .ui-widget .ui-state-active a:visited {
+    color: #222;
+    text-decoration: none;
+    outline: none;
+}
+.ui-widget .ui-state-hover a, .ui-widget .ui-state-hover a:hover, .ui-widget .ui-state-hover a:link, .ui-widget .ui-state-hover a:visited {
+    color: #222;
+    text-decoration: none;
+}
+
+/* Icons */
+.ui-widget .ui-icon {
+    display: none;
+}
+
+/* =============================================================================
+ *   jQuery / Quicktabs Tabs
+ * ========================================================================== */
+.ui-tabs,
+.quicktabs-ui-wrapper {
+    position: relative;
+    padding: 0.2em;
+}
+.ui-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: 0.2em 0.2em 0;
+    border-width: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    position: relative;
+    float: left;
+    list-style: none;
+    margin: 1px 0.2em 0 0;
+    padding: 0;
+    top: 0;
+    white-space: nowrap;
+    border-bottom-width: 0;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    margin-bottom: -1px;
+    padding-bottom: 1px;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+    float: left;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    outline: none;
+}
+
+.ui-tabs .ui-tabs-panel {
+    display: block;
+    padding: 1em 1.4em;
+    border-width: 0;
+    background: none;
+}
+
+/* =============================================================================
+ *   jQuery / Quicktabs Accordion
+ * ========================================================================== */
+/* accordion headers */
+.ui-accordion {
+    font-size: 1em;
+}
+.ui-accordion .ui-accordion-header {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    margin-top: 0.2em;
+    padding: 0.5em 0.5em 0.5em 0.7em;
+    min-height: 0;
+    background: #ddd none;
+}
+
+.ui-accordion .ui-accordion-header.ui-state-active {
+    background: #eee none;
+}
+.ui-accordion .ui-accordion-header.ui-state-default a:before {
+    content: '\f054';
+    font-family: "fontawesome";
+    font-weight: normal;
+    padding: 0 0.5em;
+    color: #808080;
+}
+.ui-accordion .ui-accordion-header.ui-state-active a:before,
+.ui-accordion .ui-accordion-header.ui-state-hover a:before {
+    content: '\f078';
+    font-family: "fontawesome";
+    font-weight: normal;
+    padding: 0 0.35em;
+    color: #222;
+}
+
+
+/* =============================================================================
+ *  Views Flexslider slideshow block made responsive
+ * ========================================================================== */
+/*
+ *  Field flexslider
+ */
+.field-item > .flex-nav-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+.field-item > .flex-nav-container > .flexslider {
+    height: auto;
+    padding-bottom: 0;
+}
+.field-item > .flex-nav-container > .flexslider .flex-caption {
+    display: none;
+}
+.field-item > .flex-nav-container > .flex-control-nav {
+    /* field item flexslider */
+    bottom: -22px;
+}
+
+/*
+ *  Banner flexslider
+ */
+.flex-nav-container {
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+.flex-nav-container > .flexslider {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    background: none;
+    /* Trick: The image is visible in the padding area and gives the element a height (overflow=hidden cuts all outside border) */
+    overflow: hidden;
+    width: 100% !important;
+    height: 0;
+    padding-bottom: 25%;
+}
+.flex-nav-container > .flexslider ul.slides li img {
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+
+/* navigation at the bottom inside the panel */
+.flex-control-nav {
+    position: absolute;
+    bottom: 0;
+    outline: none;
+    text-align: center;
+    width: 100%;
+    z-index: 2; /* guarantees controls above direction navigation */
+}
+.flex-control-nav li a {
+    cursor: pointer;
+    display: block;
+    width: 15px; /* image size */
+    height: 15px;
+    text-indent: -999em;
+    background: url("images/fs_control_nav_ring_klein.png") no-repeat scroll 0 0;
+}
+.flex-control-nav li a:hover {
+    /* get middle image */
+    background-position: 0 -15px;
+    cursor: default;
+}
+.flex-control-nav li a.active {
+    /* get last image */
+    background-position: 0 -30px;
+    cursor: default;
+}
+
+/* direction controls left and right centered */
+.flex-direction-nav li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s;
+    -webkit-transition: opacity 0.5s; /* Safari */
+}
+.flex-direction-nav li.last {
+    left: auto;
+    right: 0;
+}
+.flex-direction-nav li:hover {
+    opacity: 1.0;
+}
+
+.flex-direction-nav li a {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 1em;
+    height: 1em;
+    margin: -1em 0 0;
+    outline: none;
+    font-size: 2em;
+    line-height: 1;
+    background: none;
+}
+.flex-direction-nav li a.prev {
+    left: 0;
+    text-indent: 1em;
+}
+.flex-direction-nav li a.prev:before {
+    content: '\f053';
+    font-family: "fontawesome";
+    color: #808080;
+    text-align: center;
+    padding: 0.3em;
+    background-color: rgba(255,255,255,0.8);
+}
+
+.flex-direction-nav li a.next{
+    right: 0;
+    text-indent: -1.3em;
+}
+.flex-direction-nav li a.next:before {
+    content: '\f054';
+    font-family: "fontawesome";
+    color: #808080;
+    text-align: center;
+    padding: 0.3em;
+    background-color: rgba(255,255,255,0.8);
+}
+
+
+/* =============================================================================
+ *
+ *
+ *      Site specific element styling starts here...
+ *
+ *
+ * ========================================================================== */
+
+/* =============================================================================
+ *    User login / register / password pages
+ * ========================================================================== */
+/*
+ * General settings
+ */
+.page-user #user_register_form,
+.page-user #user_login_form,
+.page-user .create-account,
+.page-user #user_pass_form {
+    clear: both;
+    float: none;
+    width: auto;
+}
+
+.page-user #user-register-form h1,
+.page-user #user_login_form h1,
+.page-user .create-account h2,
+.page-user #user_pass_form h1 {
+    font: normal 300 38px/38px "amiraregular", Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.page-user #user-register-form .form-submit,
+.page-user #user_login_form .form-submit,
+.page-user #user_pass_form .form-submit,
+.page-user a.login-register {
+    margin-left: 0;
+    padding: 0.625em 1em;
+    font-size: 1em;
+    color: white;
+    text-transform: none;
+    line-height: 1.2;
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    border-radius: 0.25em;
+    border: none;
+    background: #45768C;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #45768C), color-stop(1, #365C6E));
+    background: -moz-linear-gradient(top center, #45768C 0%, #365C6E 100%);
+}
+.page-user #user-register-form .form-submit:hover,
+.page-user #user_pass_form .form-submit:hover,
+.page-user a.login-register:hover {
+    background: #365C6E;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #365C6E), color-stop(1, #45768C));
+    background: -moz-linear-gradient(top center, #365C6E 0%, #45768C 100%);
+}
+.page-user #user_login_form .form-submit {
+    background: #45768C;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #45768C), color-stop(1, #365C6E));
+    background: -moz-linear-gradient(top center, #45768C 0%, #365C6E 100%);
+}
+.page-user #user_login_form .form-submit:hover {
+    background: #365C6E;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #365C6E), color-stop(1, #45768C));
+    background: -moz-linear-gradient(top center, #365C6E 0%, #45768C 100%);
+}
+/*
+ * User login page
+ */
+.page-user form#user-login {
+    position: relative;
+    padding: 2em 0;
+    border: none;
+}
+.page-user #user_login_form,
+.page-user .create-account {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    vertical-align: top;
+    padding: 0 0 2em;
+    border: none;
+}
+.page-user #user_login_form {
+    border-bottom: 1px solid #444;
+}
+
+.page-user form#user-login #user_login_form .form-actions-wrapper {
+    position: relative;
+    padding: 1em 0 0;
+}
+.page-user form#user-login #user_login_form .login-password {
+    display: inline-block;
+    margin:  0.5em 0;
+    color: #365C6E;
+}
+.page-user form#user-login #user_login_form .login-password:hover {
+    color: #45768C;
+    text-decoration: underline;
+}
+.page-user form#user-login #user_login_form div.form-actions {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    vertical-align: middle;
+    margin: 0;
+}
+.page-user a.login-register {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 2em;
+}
+
+/*
+ * User register / password pages
+ */
+.page-user form#user-register-form,
+.page-user form#user-pass {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: 40em;
+    vertical-align: top;
+    margin: 1em 0;
+}
+.page-user form#user-register-form .form-actions,
+.page-user form#user-pass .form-actions {
+    margin-top: 2em;
+}
+.page-user form#user-register-form .form-actions .form-submit,
+.page-user form#user-pass .form-actions  .form-submit {
+    float: right;
+}
+.page-user form#user-register-form .form-actions .back-to-login,
+.page-user form#user-pass .back-to-login {
+    float: left;
+    margin: 0;
+}
+.page-user form#user-register-form .form-actions .back-to-login .login-account,
+.page-user form#user-pass .back-to-login .login-account {
+    display: inline-block;
+    margin-top:  0.5em;
+    color: #365C6E;
+}
+.page-user form#user-register-form .form-actions .back-to-login:before,
+.page-user form#user-pass .back-to-login:before {
+    content: '\f112';
+    font-family: "fontawesome";
+    color: #365C6E;
+    text-align: center;
+    padding: 0.3em;
+}
+.page-user form#user-register-form .form-actions .back-to-login .login-account:hover,
+.page-user form#user-pass .back-to-login .login-account:hover {
+    color: #45768C;
+    text-decoration: underline;
+}
+
+
+/* ========================================================================
+ * Isotope layout
+ * ======================================================================== */
+
+/*
+ * The grid-sizer element is used to define the width of the isotope columns in several layout modes.
+ */
+.view-werk-isotope .isotope {
+    width: 100%;
+    font-size: 100%;
+}
+.view-werk-isotope .view-content {
+    margin: 0;
+}
+.view-werk-isotope .isotope .grid-sizer,
+.view-werk-isotope .isotope .isotope-item {
+    width: 100%;
+}
+.view-werk-isotope .isotope .gutter-sizer {
+    width: 0;
+}
+
+/*
+ *  Style and size the isotope items with uncover animation
+ */
+.view-werk-isotope .isotope .isotope-item {
+    display: block;
+    margin: 0;
+    opacity: 0.0;
+}
+.view-werk-isotope .isotope .isotope-item.shown {
+    opacity: 1.0;
+}
+
+.view-werk-isotope .isotope .isotope-item.animate {
+    -webkit-transform: translateY(200px);
+    -moz-transform: translateY(200px);
+    transform: translateY(200px);
+    -webkit-animation: moveUp 0.8s ease forwards;
+    -moz-animation: moveUp 0.8s ease forwards;
+    animation: moveUp 0.8s ease forwards;
+}
+@-webkit-keyframes moveUp {
+    to { -webkit-transform: translateY(0); opacity: 1; }
+}
+@-moz-keyframes moveUp {
+    to { -moz-transform: translateY(0); opacity: 1; }
+}
+@keyframes moveUp {
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ========================================================================
+ * Isotope infinite scrolling pager
+ * ======================================================================== */
+.view-werk-isotope #isotope-iscroll-next-page,
+#isotope-iscroll_views-ajax-loader {
+    text-align: center;
+}
+.view-werk-isotope #isotope-iscroll-next-page {
+    cursor: pointer;
+    border: none;
+}
+
+
+/* ==================================================================================
+ *   Front page
+ * ================================================================================== */
+/*
+ *  Werk isotope (Front page)
+ */
+body.front .view-werk-isotope .isotope {
+    min-height: 1000px;
+}
+.view-werk-isotope .isotope .isotope-item .views-field-field-images {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0 0 1.5em;
+}
+.view-werk-isotope .isotope .isotope-item .views-field-field-images a {
+    line-height: 0;
+}
+.view-werk-isotope .isotope .isotope-item .views-field-field-images img {
+    width: 100%;
+}
+
+.view-werk-isotope .isotope .isotope-item .views-field-field-images .group-hover-text {
+    position: absolute;
+    overflow: hidden;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    width: 90.1%;
+    height: 100%;
+    padding: 0 5%;
+    color: #222;
+    background-color: #fff;
+    transition: opacity 0.2s linear 0.1s;
+    opacity: 0;
+}
+.view-werk-isotope .isotope .isotope-item .views-field-field-images .group-hover-text:hover {
+    opacity: 1.0;
+}
+
+.view-werk-isotope .isotope .isotope-item .views-field-field-images .group-hover-text .title-container {
+    position: relative;
+    top: 50%;   /* center title */
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-family: "amiraregular", Helvetica, sans-serif;
+    font-size: 1em;
+    text-transform: uppercase;
+    text-align: center;
+}
+.view-werk-isotope .isotope .isotope-item .views-field-field-images .group-hover-text .title-container a:hover {
+    color: #222222;
+    text-decoration: none;
+}
+
+
+/* ==================================================================================
+ *   Werk page
+ * ================================================================================== */
+.node-werk.node-full .view-werk-isotope {
+    position: relative;
+}
+
+.node-werk.node-full .view-werk-isotope .isotope .stamp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20em;
+    background-color: #fff;
+}
+.node-werk.node-full .view-werk-isotope .werk-intro-container {
+    position: absolute;
+    overflow: hidden;
+    cursor: pointer;
+    top: 1em;
+    left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 95%;
+    height: 18em;
+    font-size: 1em;
+    line-height: 1.3;
+    z-index: 10;
+}
+.node-werk.node-full .view-werk-isotope .intro-title,
+.node-werk.node-full .view-werk-isotope .intro-location {
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+}
+.node-werk.node-full .view-werk-isotope .intro-text {
+    margin-top: 1em;
+}
+
+.node-werk.node-full .field-name-field-plans figure {
+    line-height: 0;
+    margin: 1em auto 0;
+}
+.node-werk.node-full .field-name-field-plans img {
+    display: inline-block;
+    width: 100%;
+}
+
+.node-werk.node-full .field-name-field-plans {
+    margin-top: 2em;
+}
+.node-werk.node-full .group-description {
+    margin-top: 5em;
+}
+.node-werk.node-full .field-name-title h2 {
+    margin: 1em 0;
+    font-size: 1em;
+    font-weight: normal;
+    text-transform: uppercase;
+    line-height: 1.5;
+    letter-spacing: 0.11em;
+}
+.node-werk.node-full .field-name-body {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+    -webkit-column-gap: 0;
+    -moz-column-gap: 0;
+    column-gap: 0;
+}
+.node-werk.node-full .field-name-body p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 1em;
+}
+.node-werk.node-full .field-name-body h2,
+.node-werk.node-full .field-name-body h3,
+.node-werk.node-full .field-name-body h4,
+.node-werk.node-full .field-name-body h5 {
+    font-size: 1.1em;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    margin-bottom: 0.5em;
+}
+
+/*
+ *  Node navigation
+ */
+.node-type-werk .nav-node-container {
+    display: block;
+    width: 100%;
+    max-width: 1280px;
+    margin-top: -23px;
+    font-weight: normal;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0.11em;
+}
+.node-type-werk .nav-node-inner {
+    position: relative;
+    vertical-align: middle;
+}
+.node-type-werk .nav-node-container .nav-node-prev {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 0.5em;
+}
+.node-type-werk .nav-node-container .nav-node-next {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 0.5em;
+}
+.node-type-werk .nav-node-container a.node-title {
+    display: none;
+}
+.node-type-werk .nav-node-container a.append-node-title,
+.node-type-werk .nav-node-container a.prepend-node-title {
+    font-size: 1.25em;
+    padding: 0 0.5em;
+}
+
+/*
+ *  Colorbox style for werk pictures
+ */
+.node-type-werk #cboxOverlay {
+    background: none repeat scroll 0 0 #fff;
+    opacity: 1.0 !important;
+}
+.node-type-werk #cboxContent {
+    cursor: pointer;
+}
+.node-type-werk #cboxClose {
+    display: none;
+}
+
+
+
+/* ==================================================================================
+ *   Contact page
+ * ================================================================================== */
+.node-about-page.node-full {
+    margin: 0;
+}
+.node-about-page.node-full .div-separator {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* top region */
+.node-about-page.node-full .field-name-field-philosophie {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+    -webkit-column-gap: 0;
+    -moz-column-gap: 0;
+    column-gap: 0;
+}
+.node-about-page.node-full .field-name-field-philosophie p {
+    font-family: "amiraregular", Helvetica, sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 1em;
+}
+.node-about-page.node-full .field-name-field-philosophie h2,
+.node-about-page.node-full .field-name-field-philosophie h3,
+.node-about-page.node-full .field-name-field-philosophie h4,
+.node-about-page.node-full .field-name-field-philosophie h5 {
+    font-size: 1.1em;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+}
+
+.node-about-page.node-full .field-name-field-portrait figure {
+    line-height: 0;
+    margin: 0 auto;
+}
+.node-about-page.node-full .field-name-field-portrait img {
+    display: inline-block;
+    margin: 2em 0 0;
+    width: 100%;
+}
+
+/* left/right region */
+.node-about-page.node-full .region-two-brick-left-above .region-inner,
+.node-about-page.node-full .region-two-brick-left-below .region-inner,
+.node-about-page.node-full .region-two-brick-right-above .region-inner,
+.node-about-page.node-full .region-two-brick-right-below .region-inner {
+    margin: 4em 0 0;
+    padding: 0;
+}
+.node-about-page.node-full .region .field-name-field-biographie-1 p,
+.node-about-page.node-full .region .field-name-field-biographie-2 p {
+    font-size: 1em;
+}
+.node-about-page.node-full .region .field-name-field-biographie-1 p:first-child,
+.node-about-page.node-full .region .field-name-field-biographie-2 p:first-child {
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+}
+.node-about-page.node-full .field-name-field-firma-links p,
+.node-about-page.node-full .field-name-field-firma-rechts p {
+    font-family: "amiraregular", Helvetica, sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 1em;
+}
+.node-about-page.node-full .field-name-field-firma-links h2,
+.node-about-page.node-full .field-name-field-firma-rechts h2,
+.node-about-page.node-full .field-name-field-firma-links h3,
+.node-about-page.node-full .field-name-field-firma-rechts h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+}
+
+
+/* bottom region */
+.node-about-page.node-full #contact-dum {
+    padding-top: 4em;
+}
+.node-about-page.node-full #contact-dum .field-item {
+    font-family: "amiraregular", Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+}
+.node-about-page.node-full #contact-dum .field-item .street-block,
+.node-about-page.node-full #contact-dum .field-name-field-telefon {
+    margin-top: 2em;
+}
+.node-about-page.node-full #contact-dum .field-name-field-telefon .field-item:before {
+    content:"T ";
+}
+
+.node-about-page.node-full .field-name-field-karte {
+    margin: 4em 0 0;
+}
+.node-about-page.node-full .field-name-field-karte figure {
+    line-height: 0;
+}
+.node-about-page.node-full .field-name-field-karte a {
+    outline: none;
+}
+.node-about-page.node-full .field-name-field-karte img {
+    width:100%;
+}
+.node-about-page.node-full .field-name-field-impressum {
+    margin: 4em 0;
+    text-align: center;
+    letter-spacing: 0.11em;
+}

@@ -1,0 +1,83 @@
+<?php
+/**
+ * @file
+ * Provides a Views pager plugin for the infinite scrolling of isotope layout views.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function isotope_iscroll_views_views_api() {
+  return array('api' => '3');
+}
+
+/**
+ * Implements of hook_theme().
+ */
+function isotope_iscroll_views_theme($existing, $type, $theme, $path) {
+  return array(
+    'isotope_iscroll_pager' => array(
+      'variables' => array(
+        'tags' => array(),
+        'limit' => 10,
+        'element' => 0,
+        'parameters' => array(),
+      ),
+    ),
+  );
+}
+
+/**
+ * Pre-process function for theme-hook isotope_jscroll_pager (implemented as function theme_isotope_jscroll_pager).
+ */
+function template_preprocess_isotope_iscroll_pager (&$vars) {
+  // Setup Isotope jscroll settings for all isotope container
+  global $base_url;
+  $img_path = $base_url . '/' . drupal_get_path('module', 'isotope_iscroll_views') . '/images/ajax-loader.gif';
+  $ajax_loader = '<div id="isotope_iscroll_views-ajax-loader"><img src="' . $img_path . '" alt="loading..."/></div>';
+  $options = $vars['options'];
+
+  $js_settings = array(
+    'isotope_iscroll' => array(
+      'all' => array(
+        'autoTrigger' => $options['isotope_iscroll_auto_trigger'] ? true : false,
+        'autoTriggerUntil' => $options['isotope_iscroll_auto_trigger_until'] == 0 ? false : $options['isotope_iscroll_auto_trigger_until'],
+        'padding' => $options['isotope_iscroll_padding'],
+        'loadingHtml' => $ajax_loader,
+        'nextSelector' => 'div#isotope-iscroll-next-page',
+        'viewClass' => $vars['view_class'],
+      ),
+    ),
+  );
+  // add script settings
+  drupal_add_js($js_settings, 'setting');
+
+}
+
+/**
+ * @file
+ * Theme the infinite scroll pager of the isotope container.
+ */
+function theme_isotope_iscroll_pager($variables) {
+  $tags = $variables['tags'];
+  $parameters = $variables['parameters'];
+  $limit = isset($variables['limit']) ? $variables['limit'] : 10;
+  $element = isset($variables['element']) ? $variables['element'] : 0;
+
+  $li_next = theme('pager_next',
+    array(
+      'text' => (isset($tags[3]) ? $tags[3] : t('››')),
+      'limit' => $limit,
+      'element' => $element,
+      'interval' => 1,
+      'parameters' => $parameters,
+    )
+  );
+  if (empty($li_next)) {
+    $li_next = "&nbsp;";
+  }
+
+  // create infinite scrolling pager
+  $output = '<div id="isotope-iscroll-next-page" class="next scroll-next-page">' . $li_next . '</div>';
+  return $output;
+}

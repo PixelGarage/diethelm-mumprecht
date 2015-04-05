@@ -1,0 +1,220 @@
+<?php
+/**
+ * @file
+ * Provides a Views style plugin for the display of a flat or hierarchical filter button group used to filter Isotope items.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function isotope_filter_views_views_api() {
+  return array('api' => 3);
+}
+
+/**
+ * Implements of hook_theme().
+ */
+function isotope_filter_views_theme($existing, $type, $theme, $path) {
+  return array(
+    /*
+    'isotope_filter_tree' => array(
+      'variables' => array(
+        'view' => NULL,
+        'options' => array(),
+        'rows' => array(),
+        'button_group_id' => NULL,
+        'filters' => array(),
+      ),
+    ),*/
+    'isotope_filter_tree_inner' => array(
+      'variables' => array(
+        'view' => NULL,
+        'options' => array(),
+        'rows' => array(),
+        'result' => array(),
+        'parent' => NULL,
+        'button_group_id' => NULL,
+        'classes_array' => array(),
+        'filters' => array(),
+      ),
+    ),
+    'isotope_filter_button_group' => array(
+      'variables' => array(
+        'buttons' => array(),
+        'parent' => NULL,
+        'button_group_id' => NULL,
+        'reset_label' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+ * Pre-process function for theme-hook isotope_filter_tree (implemented as function theme_isotope_filter_tree).
+ */
+function template_preprocess_isotope_filter_tree (&$vars) {
+  // Run preprocess function for unformatted style
+  template_preprocess_views_view_unformatted($vars);
+
+  $rows = $vars['rows'];
+  $filter_array = array();
+
+  // clean taxonomy terms to be usable for filter css classes
+  foreach ($rows as $id => $row) {
+    $row = trim($row);
+    $filter = drupal_clean_css_identifier(strtolower($row));
+    $vars['rows'][$id] = $row;
+    $filter_array[$id] = $filter;
+  }
+
+  // get options and add unique id for button group
+  $view =  $vars['view'];
+  $options = $vars['options'];
+
+  $button_group_id = 'filter-buttons-' . $view->vid . '-' . drupal_clean_css_identifier($view->current_display);
+  $vars['button_group_id'] = $button_group_id;
+  $vars['filters'] = $filter_array;
+
+  isotope_filter_apply($button_group_id, $options);
+}
+
+/**
+ * Theme function for the isotope hierarchical/flat filter button view.
+ *
+ * Because we need to build a hierarchical structure (recursively) a theme function makes more sense
+ * than a template.
+ *
+ * @ingroup themeable
+ * @link http://drupal.org/node/355919
+ */
+function theme_isotope_filter_tree($variables) {
+  $view = $variables['view'];
+  $options = $variables['options'];
+  $rows = $variables['rows'];
+  $title = ($options['isotope_filter_title'] === '<none>') ? '' : $options['isotope_filter_title'];
+  $result = $view->result;
+  $classes_array = sizeof($variables['classes_array']) > 0 ? $variables['classes_array'] : array();
+
+  // check, if hierarchy information (relationship to parent term) is set in the view
+  if (! property_exists($result[0], 'taxonomy_term_data_taxonomy_term_hierarchy_tid')) {
+    $options['isotope_filter_render_flat'] = true; // force flat rendering
+
+  } else {
+    // set parent of the top level records to 0
+    foreach ($result as $i => $record) {
+      if ($record->taxonomy_term_data_taxonomy_term_hierarchy_tid == null) {
+        $result[$i]->taxonomy_term_data_taxonomy_term_hierarchy_tid = 0;
+      }
+    }
+
+  }
+
+  // Recursively render each item.
+  $tree = theme('isotope_filter_tree_inner', array(
+      'view' => $view,
+      'options' => $options,
+      'rows' => $rows,
+      'result' => $result,
+      'parent' => 0,
+      'button_group_id' => $variables['button_group_id'],
+      'classes_array' => $classes_array,
+      'filters' => $variables['filters'],
+    )
+  );
+
+  // build hierarchical button group
+  $output = '<div class="ui-group">';
+  if (isset($title) && $title !== '') {
+    $output .= '<h3 class="group-title">' . $title . '</h3>';
+  }
+  $output .= $tree . '</div>';
+
+  return $output;
+}
+
+/**
+ * Inner recursive theme function for the isotope hierarchical/flat filter buttons.
+ *
+ * @ingroup themeable
+ * @param $variables
+ * @internal param $view
+ * @internal param $options
+ * @internal param $rows
+ * @internal param $result An array representing the raw data returned from the query.
+ * @internal param $parent The id of the parent entry in the call stack.
+ * @internal param $button_group_id The id of button group to be created
+ * @internal param $reset_label The label of the reset button, if any
+ * @internal param $filters The array of the cleaned filter values in the same order than the rows.
+ * @internal param $classes_array The array of the row classes.
+ * @return string The markup for the hierarchical filter buttons.
+ */
+function theme_isotope_filter_tree_inner($variables) {
+  $options = $variables['options'];
+  $rows = $variables['rows'];
+  $result = $variables['result'];
+  $parent = $variables['parent'];
+  $button_group_id = $variables['button_group_id'];
+  $classes_array = $variables['classes_array'];
+  $filters = $variables['filters'];
+  $reset_label = ($options['isotope_filter_reset_label'] === '<none>') ? '' : $options['isotope_filter_reset_label'];
+  $render_flat = $options['isotope_filter_render_flat'];
+
+  $buttons = array();
+  foreach ($result as $i => $record) {
+    if ($render_flat) {
+      // render flat button group
+      $buttons[] = '<span class="button ' . $classes_array[$i] . ' ' . $filters[$i] . '" data-filter=".' .  $filters[$i] . '">' . $rows[$i] . '</span>';
+
+    } else {
+      // render hierarchical button group, if parent info is available
+      if ($record->taxonomy_term_data_taxonomy_term_hierarchy_tid == $parent) {
+        $variables['parent'] = $record->tid;
+        $subgroup = theme_isotope_filter_tree_inner($variables);
+        $button_start = ($subgroup !== '') ? '<span class="button parent ' : '<span class="button ';
+        $buttons[] = $button_start . $classes_array[$i] . ' ' . $filters[$i] . '" data-filter=".' .  $filters[$i] . '">' . $rows[$i] . $subgroup . '</span>';
+
+      }
+    }
+  }
+
+  // return the rendered button group, if buttons are available
+  return count($buttons)
+    ? theme('isotope_filter_button_group', array('buttons' => $buttons, 'parent' => $parent, 'button_group_id' => $button_group_id, 'reset_label' => $reset_label))
+    : '';
+
+}
+
+/**
+ * Theme function for the isotope filter button group.
+ *
+ * @ingroup themeable
+ * @param $variables
+ * @internal param $buttons The buttons contained in the group
+ * @internal param $parent The id of the parent entry in the call stack.
+ * @internal param $button_group_id The id of button group to be created
+ * @internal param $reset_label The label of the reset button, if any
+ * @return string The markup for the hierarchical filter buttons.
+ */
+function theme_isotope_filter_button_group($variables) {
+  $buttons = $variables['buttons'];
+  $button_group_id = $variables['button_group_id'];
+  $reset_label = t($variables['reset_label']);
+  $parent = $variables['parent'];
+
+  // create top button group
+  $output = ($parent == 0)
+    ? '<div id="' . $button_group_id . '" class="filters top-button-group button-group clearfix">'
+    : '<div class="filters child-button-group button-group clearfix">';
+
+  // add reset button, if label is set
+  if ($parent == 0 && isset($reset_label) && $reset_label !== '') {
+    $output .= '<span class="button reset selected" data-filter="*">' . $reset_label . '</span>';
+  }
+
+  // print buttons
+  foreach ($buttons as $i => $button) {
+    $output .= $button;
+  }
+  $output .= '</div>';
+  return $output;
+}

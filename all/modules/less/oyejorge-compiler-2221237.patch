@@ -1,0 +1,48 @@
+From 0669b71874aaad916ba24d838f94bab29cf5c2d2 Mon Sep 17 00:00:00 2001
+From: alexkb <alexkb@35674.no-reply.drupal.org>
+Date: Wed, 26 Mar 2014 21:20:46 +0800
+Subject: [PATCH] Issue #2221237 by alexkb: Switching to use the oyejorge baes
+ less php compiler.
+
+---
+ README.txt   |    4 ++--
+ less.install |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/README.txt b/README.txt
+index 1bc9961..a8d6311 100644
+--- a/README.txt
++++ b/README.txt
+@@ -1,6 +1,6 @@
+ LESS CSS Preprocessor
+ 
+-Files in lessphp/ are from the library at http://leafo.net/lessphp/
++Files in lessphp/ are from the library at http://lessphp.gpeasy.com/#integration-with-other-projects
+ 
+ The LICENSE file in lessphp/ applies only to files within lessphp/
+ 
+@@ -13,7 +13,7 @@ lessphp library unpacked so that 'lessc.inc.php' is located at 'sites/all/librar
+ LESS Development:
+ 
+ Syntax:
+-http://leafo.net/lessphp/docs/
++http://lesscss.org/
+ 
+ File placement:
+ If your source file was "sites/all/modules/test/test.css.less"
+diff --git a/less.install b/less.install
+index e2748ba..7f62a2c 100644
+--- a/less.install
++++ b/less.install
+@@ -38,7 +38,7 @@ function less_requirements($phase) {
+         $requirements['less_version'] = array(
+           'title' => t('LESS'),
+           'value' => isset(lessc::$VERSION) ? preg_replace('/([^0-9\.-])+/i', '', lessc::$VERSION) : 'unknown',
+-          'description' => t('To check for newer versions of lessphp, go to <a href="!url" target="_blank">http://leafo.net/lessphp/</a>', array("!url" => url('http://leafo.net/lessphp/'))),
++          'description' => t('To check for newer versions of lessphp, go to <a href="!url" target="_blank">https://github.com/oyejorge/less.php/releases</a>', array("!url" => url('https://github.com/oyejorge/less.php/releases'))),
+           'severity' => REQUIREMENT_OK,
+         );
+       }
+-- 
+1.7.9.5
+

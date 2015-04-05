@@ -1,0 +1,28 @@
+diff --git a/webform_mailchimp.module b/webform_mailchimp.module
+index 41cf3fa..735f523 100644
+--- a/webform_mailchimp.module
++++ b/webform_mailchimp.module
+@@ -126,9 +126,9 @@ function webform_mailchimp_webform_submission_insert($node, $submission) {
+         }
+       }
+       foreach ($groupfields_replacements as $groupname => $values_array) {
+-        $mergefields_replacements['GROUPINGS'][] = array(
++        $mergefields_replacements['groupings'][] = array(
+           'name' => $groupname,
+-          'groups' => implode(',', $values_array),
++          'groups' => $values_array,
+         );
+       }
+     }
+@@ -136,9 +136,10 @@ function webform_mailchimp_webform_submission_insert($node, $submission) {
+     // If we have an email address and a list is set, try to subscribe the user.
+     if ($email_address != '' && !empty($mailchimp_lists)) {
+       $q = mailchimp_get_api_object();
++
+       if ($q) {
+         foreach ($mailchimp_lists as $mailchimp_list) {
+-          $success = $q->listSubscribe($mailchimp_list, $email_address, $mergefields_replacements, 'html', FALSE, TRUE);
++          $success = $q->lists->subscribe($mailchimp_list, array('email' => $email_address), $mergefields_replacements, 'html', FALSE, TRUE);
+           if ($success) {
+             watchdog('webform_mailchimp', 'E-mail subscribed: %email', array('%email' => $email_address), WATCHDOG_INFO);
+           }

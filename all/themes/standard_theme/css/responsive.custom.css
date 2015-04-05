@@ -1,0 +1,225 @@
+/*
+ * responsive.custom.css is for custom media queries that are not set via the
+ * theme settings, such as cascading media queries.
+ *
+ * By default all the other responsive stylesheets used in Adaptivetheme use a
+ * "stacking method", however cascading media queries use a waterfall method so
+ * you can leverage the cascade and inheritance for all browsers that support
+ * media queries, regardless of screen size.
+ *
+ * @SEE http://zomigi.com/blog/essential-considerations-for-crafting-quality-media-queries/#mq-overlap-stack
+ *
+ * NOTE: this file loads by default, to disable got to your theme settings and
+ * look under the "CSS" settings tab.
+ */
+@media screen and (min-width: 30em) { /* >= 480 px */
+    /* header: logo and menu and navigation */
+    #header {
+        height: 120px;
+    }
+    nav.block-main-menu ul li a,
+    nav.block-main-menu ul li a:visited {
+        font-size: 1em;
+        line-height: 1;
+    }
+    #logo {
+        margin: 1.4em 0;
+        max-width: 360px;
+    }
+    .node-type-werk .nav-node-container .nav-node-prev {
+        margin-left: 1em;
+    }
+    .node-type-werk .nav-node-container .nav-node-next {
+        margin-right: 1em;
+    }
+
+    /* isotope general */
+    .view-werk-isotope .isotope .grid-sizer,
+    .view-werk-isotope .isotope .isotope-item {
+        width: 50%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w1 {
+        width: 50%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w2 {
+        width: 50%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w3 {
+        width: 100%;
+    }
+    .view-werk-isotope .view-content {
+        margin: 0 -1em;
+    }
+    .view-werk-isotope .isotope .isotope-item .views-field-field-images {
+        margin: 0 1em 1.5em;
+    }
+
+    /* isotope werk full */
+    .node-werk.node-full .view-werk-isotope .isotope .stamp {
+        width: 100%;
+        height: 16em;
+    }
+    .node-werk.node-full .view-werk-isotope .werk-intro-container {
+        height: 14em;
+    }
+
+    /* contact page */
+    .node-about-page.node-full .field-name-field-portrait img {
+        margin: 4em 0 0;
+        width: 75%;
+    }
+    .node-about-page.node-full .region-two-brick-left-above .region-inner,
+    .node-about-page.node-full .region-two-brick-left-below .region-inner {
+        padding: 0 2em 0 0;
+    }
+    .node-about-page.node-full .region-two-brick-left-above .region-inner {
+        border-right: 1px solid #222;
+    }
+    .node-about-page.node-full .region-two-brick-right-above .region-inner,
+    .node-about-page.node-full .region-two-brick-right-below .region-inner {
+        padding: 0 0 0 2em;
+    }
+
+}
+
+@media screen and (min-width: 40em) {  /* >= 640 px */
+    /* header: logo and columns width */
+    #header {
+        height: 140px;
+    }
+    #logo {
+        margin: 1.6em 0;
+        max-width: 440px;
+    }
+    #columns {
+        width: 75%;
+    }
+
+    /* contact page */
+    .node-about-page.node-full .field-name-field-portrait img {
+        margin: 6em 0 0;
+    }
+    .node-about-page.node-full .region-two-brick-left-above .region-inner,
+    .node-about-page.node-full .region-two-brick-left-below .region-inner {
+        padding: 0 4em 0 0;
+    }
+    .node-about-page.node-full .region-two-brick-right-above .region-inner,
+    .node-about-page.node-full .region-two-brick-right-below .region-inner {
+        padding: 0 0 0 4em;
+    }
+    .node-about-page.node-full .field-name-field-karte {
+        margin: 4em -12.5% 0;
+    }
+
+}
+
+@media screen and (min-width: 48em) { /* >= 768 px */
+    /* header: logo and columns width */
+    #header {
+        height: 180px;
+    }
+    #logo {
+        margin: 2.25em 0;
+        max-width: 500px;
+    }
+    /* isotope */
+    .view-werk-isotope .isotope .grid-sizer,
+    .view-werk-isotope .isotope .isotope-item {
+        width: 33.3333%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w1 {
+        width: 33.3333%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w2 {
+        width: 33.3333%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w3 {
+        width: 66.6666%;
+    }
+
+    /* isotope werk full */
+    .node-werk.node-full .view-werk-isotope .isotope .stamp {
+        width: 60%;
+        height: 20em;
+    }
+    .node-werk.node-full .view-werk-isotope .werk-intro-container {
+        width: 55%;
+        height: 18em;
+    }
+    .node-werk.node-full .view-werk-isotope .isotope .isotope-item.views-row-1.w3 {
+        width: 33.3333%;
+    }
+
+    /* werk full */
+    .node-werk.node-full .field-name-body {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+        -webkit-column-gap: 2.5em;
+        -moz-column-gap: 2.5em;
+        column-gap: 2.5em;
+    }
+
+    /* contact page */
+    .node-about-page.node-full .field-name-field-portrait img {
+        margin: 8em 0 0;
+        width: 50%;
+    }
+    .node-about-page.node-full .field-name-field-philosophie {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+        -webkit-column-gap: 2.5em;
+        -moz-column-gap: 2.5em;
+        column-gap: 2.5em;
+    }
+}
+
+@media screen and (min-width: 60em) {  /* >= 960 px */
+    /* header: navigation */
+    .node-type-werk .nav-node-container .nav-node-prev {
+        margin-left: 2em;
+    }
+    .node-type-werk .nav-node-container .nav-node-next {
+        margin-right: 2em;
+    }
+    .node-type-werk .nav-node-container .nav-node-prev a.node-title,
+    .node-type-werk .nav-node-container .nav-node-next a.node-title {
+        display: inline;
+        font-size: 1em;
+    }
+}
+
+@media screen and (min-width: 64em) { /* >= 1024 px */
+    /* isotope */
+    .view-werk-isotope .isotope .grid-sizer,
+    .view-werk-isotope .isotope .isotope-item {
+        width: 25%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w1 {
+        width: 25%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w2 {
+        width: 25%;
+    }
+    .view-werk-isotope .isotope .isotope-item.w3 {
+        width: 50%;
+    }
+
+    /* isotope project full */
+    .node-werk.node-full .view-werk-isotope .isotope .stamp {
+        width: 45%;
+        height: 20em;
+    }
+    .node-werk.node-full .view-werk-isotope .werk-intro-container {
+        width: 40%;
+        height: 18em;
+    }
+    .node-werk.node-full .view-werk-isotope .isotope .isotope-item.views-row-1.w1,
+    .node-werk.node-full .view-werk-isotope .isotope .isotope-item.views-row-1.w2,
+    .node-werk.node-full .view-werk-isotope .isotope .isotope-item.views-row-1.w3 {
+        width: 50%;
+    }
+
+
+}
