@@ -6,9 +6,9 @@ configure = admin/config/system/aes
 files[] = aes.module
 files[] = aes.install
 
-; Information added by Drupal.org packaging script on 2015-01-27
-version = "7.x-1.9"
+; Information added by Drupal.org packaging script on 2015-10-09
+version = "7.x-1.10"
 core = "7.x"
 project = "aes"
-datestamp = "1422371901"
+datestamp = "1444415949"
 

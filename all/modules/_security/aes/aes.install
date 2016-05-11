@@ -67,14 +67,14 @@ function aes_enable() {
   }
 
   $aes_implementations = aes_get_available_aes_implementations();
-  if ($aes_implementations['mcrypt']) {
-    variable_set("aes_implementation", "mcrypt");
-    $install_msg = t("AES enabled using the MCrypt implementation.");
+  if ($aes_implementations['phpseclib']) {
+    variable_set("aes_implementation", "phpseclib");
+    $install_msg = t("AES enabled using the phpseclib implementation.");
   }
   else {
-    if ($aes_implementations['phpseclib']) {
-      variable_set("aes_implementation", "phpseclib");
-      $install_msg = t("AES enabled using the phpseclib implementation.");
+    if ($aes_implementations['mcrypt']) {
+      variable_set("aes_implementation", "mcrypt");
+      $install_msg = t("AES enabled using the MCrypt implementation.");
     }
     else {
       // This case shouldn't actually be possible since hook_requirements should stop the installation if there's no implementation.
@@ -84,11 +84,9 @@ function aes_enable() {
   }
   drupal_set_message($install_msg);
 
-  if (variable_get("aes_implementation", "mcrypt") == "mcrypt") {
-    $iv = base64_decode(variable_get("aes_encryption_iv", FALSE));
-    if (empty($iv)) {
-      aes_make_iv();
-    }
+  $iv = base64_decode(variable_get("aes_encryption_iv", FALSE));
+  if (empty($iv)) {
+    aes_make_iv(TRUE);
   }
   // This will create a new key if one doesn't exist.
   aes_get_key();

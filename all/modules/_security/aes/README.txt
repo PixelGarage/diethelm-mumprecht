@@ -8,26 +8,24 @@ This module can basically be useful in 2 ways:
 REQUIREMENTS
 ----------------------
 This module requires an implementation of AES encryption to work. Since 1.4 there are two supported implementations:
-1. PHP's Mcrypt extension.
-2. PHP Secure Communications Library (phpseclib)
+1. PHP's Mcrypt extension, based on old abandoned library libmcrypt but still in the saddle.
+2. PHP Secure Communications Library (phpseclib).
 
 You need to have at least one of these installed (both is fine as well).
-Mcrypt is a lot faster than phpseclib (about 60 times faster according to my unscientific testing), so you might want to use Mcrypt if you have it. But if you don't, then phpseclib is a great alternative, and the speed difference probably won't matter in most cases.
+Mcrypt is a lot faster than phpseclib (about 15..60 times according to simple tests in different conditions), so you might want to use old but fast Mcrypt.
+The phpseclib is a great alternative, and the speed difference probably won't matter in most cases.
 
 If you don't have any of them, then read the next section below.
 
-As far as I can tell, this module also requires a PHP version of at least 4.3.0. However this module has not been tested on anything less 
-than PHP 5.2.
-
-Also note that although this module SHOULD work on Windows and with a MySQL database, it has only been tested on Linux with a PostgreSQL 
+Also note that although this module SHOULD work on Windows and with a MySQL database, it has only been tested on Linux with a PostgreSQL
 database.
 
 HOW TO GET AN AES IMPLEMENTATION
 ----------------------
 If you don't have an AES implementation (you'll notice this when you install this module) then the easiest implementation for you to get is probably the PHP Secure Communications Library (phpseclib).
 
-Just download the latest version from http://phpseclib.sourceforge.net/ and extract it into a directory called "phpseclib" inside the aes directory. Note that the zip file of the version of phpseclib that this module was developed with doesn't create the phpseclib directory itself, it just extracts its various directories directly into the location you unzip it, so create that "phpseclib" directory first and then move the zip file into it, and unzip. The complete path to the file which will be included by this module (AES.php) should look like this:
-aes/phpseclib/Crypt/AES.php . You also may install PhpSecLib as a regular Drupal library.
+Just download the latest version from http://phpseclib.sourceforge.net/ and install it as a regular Drupal library.
+You should have actual AES implementation located in he file like sites/all/libraries/phpseclib/Crypt/AES.php and the Library module have to be enabled.
 
 That's it! Try installing/enabling the module again.
 
@@ -43,3 +41,16 @@ Something you should pay attention to (if you want any sort of security) is how 
 UPGRADING FROM 1.3 OR EARLIER
 ----------------------
 If you're upgrading from an earlier version than 1.4, and don't want to change anything, then just stick with the Mcrypt implementation since that is the (only) implementation this module used in earlier versions. It should be selected as default when you install/upgrade (remember to run update.php).
+
+TODO
+____
+Ideas for 7.x-2.x
+- PHPSecLib currently supported IV so usage setIV() should be added;
+  the adding itself is easy, backward compatibility is an issue;
+- Ability to manually update IV. Check for correct number of bytes;
+- Here is an example of having same result by different implementation:
+  http://stackoverflow.com/questions/9305781/cant-get-the-same-result-for-encryption-with-mcrypt-and-phpseclib
+  cannot reproduce the same for 256 bits;
+- Optionally(?) store IV together with encoded data, like <hex-iv>~<base64-encrypted>;
+- the MCrypt extension is kind of abandoned and obsolete; switch to any new player like libsodium if they strong enough
+  to be represented as a core PHP extension;

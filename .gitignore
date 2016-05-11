@@ -3,6 +3,7 @@ default/settings*.php
 
 # Ignore paths that contain user-generated content.
 default/files/
+default/files_private/backup_migrate/scheduled
 
 # ignore project settings and
 .idea/
