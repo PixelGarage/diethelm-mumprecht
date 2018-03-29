@@ -31,10 +31,10 @@
         $$ = $$.children('li').children('ul');
       }
       // cache all ul elements
-      $ULs = $$.find('ul');
+      var $ULs = $$.find('ul'),
       // get the font size of menu.
       // .css('fontSize') returns various results cross-browser, so measure an em dash instead
-      var fontsize = $('<li id="menu-fontsize">&#8212;</li>'),
+      fontsize = $('<li id="menu-fontsize">&#8212;</li>'),
       size = fontsize.attr('style','padding:0;position:absolute;top:-99999em;width:auto;')
       .appendTo($$)[0].clientWidth; //clientWidth is faster than width()
       // remove em dash
@@ -46,15 +46,15 @@
         // cache this ul
         $ul = $ULs.eq(b);
         // If a multi-column sub-menu, and only if correctly configured.
-        if ($ul.hasClass('sf-megamenu') && $ul.find('.sf-megamenu-column').length > 0){
+        if (o.megamenu && $ul.hasClass('sf-megamenu') && $ul.find('.sf-megamenu-column').length > 0){
           // Look through each column.
-          $column = $ul.find('div.sf-megamenu-column > ol');
+          var $column = $ul.find('div.sf-megamenu-column > ol'),
           // Overall width.
-          var mwWidth = 0;
-          for (d = 0; d < $column.length; d++){
+          mwWidth = 0;
+          for (var d = 0; d < $column.length; d++){
             resize($column.eq(d));
             // New column width, in pixels.
-            var colWidth = $column.css('width');
+            var colWidth = $column.width();
             // Just a trick to convert em unit to px.
             $column.css({width:colWidth})
             // Making column parents the same size.
@@ -68,7 +68,7 @@
         else {
           resize($ul);
         }
-      }  
+      }
     }
     function resize($ul){
       var
@@ -102,11 +102,12 @@
         var offsetDirection = $childUl.css('left') !== undefined ? 'left' : 'right';
         $childUl.css(offsetDirection,'100%');
       }
-    }    
+    }
     return this;
   };
   // expose defaults
   $.fn.supersubs.defaults = {
+    megamenu: true, // define width for multi-column sub-menus and their columns.
     minWidth: 12, // requires em unit.
     maxWidth: 27, // requires em unit.
     extraWidth: 1 // extra width can ensure lines don't sometimes turn over due to slight browser differences in how they round-off values

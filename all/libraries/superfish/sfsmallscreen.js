@@ -89,7 +89,7 @@
             classes += ' active';
           }
           // <option> has to be disabled if the item is not a link.
-          disable = item.is('span') ? ' disabled="disabled"' : '',
+          disable = item.is('span') || item.attr('href')=='#' ? ' disabled="disabled"' : '',
           // Crystal clear.
           subIndicator = 1 < level ? Array(level).join('-') + ' ' : '';
           // Preparing the <option> element.
@@ -239,12 +239,15 @@
           // Creating the <option> elements.
           var newMenu = toSelect(refinedMenu, 1),
           // Creating the <select> element and assigning an ID and class name.
-          selectList = $('<select class="' + classes + '" id="' + menuID + '-select"/>')
+          selectList = $('<select' + classes + ' id="' + menuID + '-select"/>')
           // Attaching the title and the items to the <select> element.
           .html('<option>' + options.title + '</option>' + newMenu)
           // Attaching an event then.
           .change(function(){
-            window.location = selectList.val();
+            // Except for the first option that is the menu title and not a real menu item.
+            if ($('option:selected', this).index()){
+              window.location = selectList.val();
+            }
           });
           // Applying the addSelected option to it.
           if (options.addSelected){
@@ -281,15 +284,23 @@
         convert(menu);
       }
       else if (mode == 'window_width'){
-        var breakpoint = (options.breakpointUnit == 'em') ? (options.breakpoint * parseFloat($("body").css("font-size"))) : options.breakpoint,
+        var breakpoint = (options.breakpointUnit == 'em') ? (options.breakpoint * parseFloat($('body').css('font-size'))) : options.breakpoint,
+        windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
         timer;
-        if (document.documentElement.clientWidth < breakpoint){
+        if ((typeof Modernizr === 'undefined' || typeof Modernizr.mq !== 'function') && windowWidth < breakpoint){
+          convert(menu);
+        }
+        else if (typeof Modernizr !== 'undefined' && typeof Modernizr.mq === 'function' && Modernizr.mq('(max-width:' + (breakpoint - 1) + 'px)')) {
           convert(menu);
         }
         $(window).resize(function(){
           clearTimeout(timer);
           timer = setTimeout(function(){
-            if (document.documentElement.clientWidth < breakpoint){
+            var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            if ((typeof Modernizr === 'undefined' || typeof Modernizr.mq !== 'function') && windowWidth < breakpoint){
+              convert(menu);
+            }
+            else if (typeof Modernizr !== 'undefined' && typeof Modernizr.mq === 'function' && Modernizr.mq('(max-width:' + (breakpoint - 1) + 'px)')) {
               convert(menu);
             }
             else {
