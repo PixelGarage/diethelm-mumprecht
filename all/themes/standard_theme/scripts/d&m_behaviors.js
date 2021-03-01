@@ -100,7 +100,7 @@
     Drupal.behaviors.replaceMapLink = {
         attach: function () {
             var $map = $(".node-about-page .field-name-field-karte a")
-                mapLink = "https://www.google.ch/maps/place/Binzstrasse+12,+8045+Z%C3%BCrich/@47.3629534,8.5158087,16z/data=!4m2!3m1!1s0x479009f34545e157:0x5283bd06b251cca3?hl=de";
+                mapLink = "https://www.google.ch/maps/place/Zelgstrasse+6/@47.3679512,8.5227771,16.76z/data=!4m6!3m5!1s0x479009f607d18611:0xce5c89efec6e9084!4b1!8m2!3d47.3674649!4d8.5225578?hl=de";
 
             $map.attr({
                 "href": mapLink,
